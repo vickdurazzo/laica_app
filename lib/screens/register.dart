@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/form_input.dart';
 
@@ -19,6 +20,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   bool _termsAgreed = false;
   bool _updatesSubscribed = false;
+  
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null) {
+      setState(() {
+        _childBirthdayController.text = DateFormat('dd/MM/yyyy').format(picked);
+      });
+    }
+  }
+
+  void _showBirthdayPicker() {
+    _selectDate(context);
+  }
+
+
 
   @override
   void dispose() {
@@ -92,6 +113,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     labelText: 'Aniversário da criança',
                     suffixIcon: Icons.cake,
                     keyboardType: TextInputType.number,
+                    onTap: () {
+                      _showBirthdayPicker();
+                    },
                   ),
                   const SizedBox(height: 10),
                   CustomTextField(

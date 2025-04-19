@@ -5,6 +5,7 @@ class CustomTextField extends StatelessWidget {
   final String labelText;
   final IconData suffixIcon;
   final TextInputType keyboardType;
+  final VoidCallback? onTap;
 
   const CustomTextField({
     Key? key,
@@ -12,6 +13,7 @@ class CustomTextField extends StatelessWidget {
     required this.labelText,
     required this.suffixIcon,
     this.keyboardType = TextInputType.text,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -19,6 +21,12 @@ class CustomTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: TextField(
+        onTap: () {
+          if (onTap != null) {
+            onTap!();
+          }},
+        readOnly: onTap != null,
+
         controller: controller,
         keyboardType: keyboardType,
         decoration: InputDecoration(
