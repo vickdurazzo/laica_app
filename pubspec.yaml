@@ -66,6 +66,11 @@ flutter:
     - assets/data/planets.json
     - assets/images/planet1.png
     - assets/images/planet2.png
+    - assets/images/naveQuebrada.png
+    - assets/images/recompensas.png
+    - assets/images/family_photo.png
+    - assets/images/islands/
+    - assets/images/
 
 
   # To add assets to your application, add an assets section, like this:

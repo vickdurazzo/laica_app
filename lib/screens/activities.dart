@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import '../models/planet.dart';
-import 'activities.dart'; // ajuste o caminho se necessário
+import '../models/island.dart';
 
+class ActivitiesScreen extends StatelessWidget {
+  final Island island;
 
-class IslandsScreen extends StatelessWidget {
-  final Planet planet;
-
-  const IslandsScreen({Key? key, required this.planet}) : super(key: key);
+  const ActivitiesScreen({Key? key, required this.island}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +19,9 @@ class IslandsScreen extends StatelessWidget {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 12.0),
+            padding: const EdgeInsets.only(right: 12.0, top: 12.0),
             child: Image.asset(
-              planet.image,
+              island.image,
               height: 120,
             ),
           ),
@@ -32,53 +30,49 @@ class IslandsScreen extends StatelessWidget {
       extendBodyBehindAppBar: true,
       body: Stack(
         children: [
-          // Fundo estrelado (coloque uma imagem de fundo se quiser)
           Positioned.fill(
             child: Image.asset(
               'assets/images/background.png',
               fit: BoxFit.cover,
             ),
           ),
-
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  
-                  
-
                   Expanded(
                     child: ListView.builder(
                       padding: const EdgeInsets.all(16),
-                      itemCount: planet.island.length,
+                      itemCount: island.activities.length,
                       itemBuilder: (context, index) {
-                        final island = planet.island[index];
+                        final activity = island.activities[index];
                         final isEven = index % 2 == 0;
+                        final isAccessible = activity.status == "available" || activity.status == "completed";
 
-                        final islandWidget = GestureDetector(
-                     
-                          onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ActivitiesScreen(island: island),
-                                ),
-                              );
-                            },
-
+                        final activityWidget = GestureDetector(
+                          onTap: isAccessible
+                              ? () {
+                                  // Aqui você pode navegar para a tela de vídeo
+                                  // Navigator.push(...);
+                                }
+                              : null,
                           child: Column(
                             children: [
-                              ClipOval(
-                                child: Image.asset(
-                                  island.image,
-                                  fit: BoxFit.cover,
-                                  width: 180,
-                                  height: 180,
-                                ),
+                              Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  ClipOval(
+                                    child: Image.asset(
+                                      'assets/images/${activity.status}.png',
+                                      fit: BoxFit.cover,
+                                      width: 100,
+                                      height: 100,
+                                    ),
+                                  ),
+                                  
+                                ],
                               ),
-                              //const SizedBox(height: 8),
-                              
                             ],
                           ),
                         );
@@ -89,24 +83,21 @@ class IslandsScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: isEven
                                 ? [
-                                    Expanded(child: islandWidget),
+                                    Expanded(child: activityWidget),
                                     const Expanded(child: SizedBox()),
                                   ]
                                 : [
                                     const Expanded(child: SizedBox()),
-                                    Expanded(child: islandWidget),
+                                    Expanded(child: activityWidget),
                                   ],
                           ),
                         );
                       },
                     ),
                   ),
-
                 ],
               ),
-              
-            )
-            
+            ),
           ),
         ],
       ),

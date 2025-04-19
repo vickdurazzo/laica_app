@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
+import 'island.dart';
 
 class Planet {
   final String id;
   final String name;
   final String image;
-  final Color color;
-  final List<dynamic> island;
+  final String color;
+  final List<Island> island;
 
   Planet({
     required this.id,
@@ -20,8 +20,10 @@ class Planet {
       id: json['id'],
       name: json['name'],
       image: json['image'],
-      color: Color(int.parse(json['color'].replaceFirst('#', '0xff'))),
-      island: json['island'] ?? [],
+      color: json['color'],
+      island: (json['island'] as List)
+          .map((islandJson) => Island.fromJson(islandJson))
+          .toList(),
     );
   }
 }

@@ -18,7 +18,7 @@ class MenuScreen extends StatelessWidget {
         fit: StackFit.expand,
         children: <Widget>[
           Image.asset(
-            'assets/background.png',
+            'assets/images/background.png',
             fit: BoxFit.cover,
           ),
           SafeArea(
@@ -40,7 +40,7 @@ class MenuScreen extends StatelessWidget {
                       Align(
                         alignment: Alignment.topLeft,
                         child: Image.asset(
-                          'assets/logo.png',
+                          'assets/images/logo.png',
                           height: 50,
                         ),
                       ),
@@ -71,7 +71,7 @@ class MenuScreen extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => IslandScreen(planet: planet),
+                                    builder: (context) => IslandsScreen(planet: planet),
                                   ),
                                 );
                               },
