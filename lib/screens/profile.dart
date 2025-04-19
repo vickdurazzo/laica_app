@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../widgets/bottom_nav.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/profile_option.dart';
+import 'profile_edit.dart';
+import 'support.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -32,7 +34,8 @@ class ProfileScreen extends StatelessWidget {
                     const SizedBox(height: 20),
                     const CircleAvatar(
                       radius: 50,
-                      backgroundImage: AssetImage('assets/images/family_photo.png'),
+                      backgroundImage:
+                          AssetImage('assets/images/family_photo.png'),
                     ),
                     const SizedBox(height: 16),
                     const Text(
@@ -101,14 +104,31 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    const ProfileOption(
+
+                    // Opções com navegação
+                    ProfileOption(
                       icon: Icons.person_outline,
                       text: 'Configurações da Conta',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ProfileEditScreen()),
+                        );
+                      },
                     ),
-                    const ProfileOption(
-                      icon: Icons.help_outline,
+                    ProfileOption(
+                      icon: Icons.settings,
                       text: 'Suporte',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SupportScreen()),
+                        );
+                      },
                     ),
+
                     const SizedBox(height: 20),
                     PrimaryButton(
                       text: 'Sair',
@@ -127,5 +147,3 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
-
-

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/island.dart';
+import 'activity_detail.dart';
 
 class ActivitiesScreen extends StatelessWidget {
   final Island island;
@@ -53,8 +54,12 @@ class ActivitiesScreen extends StatelessWidget {
                         final activityWidget = GestureDetector(
                           onTap: isAccessible
                               ? () {
-                                  // Aqui você pode navegar para a tela de vídeo
-                                  // Navigator.push(...);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ActivityDetailScreen(activityTitle: activity.name),
+                                    ),
+                                  );
                                 }
                               : null,
                           child: Column(
