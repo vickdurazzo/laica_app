@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import '../widgets/card_widget.dart';
 import '../widgets/bottom_nav.dart';
+import '../widgets/image_widget.dart'; // Importa o componente de imagem
 
 class RewardsScreen extends StatelessWidget {
   const RewardsScreen({super.key});
@@ -7,12 +9,53 @@ class RewardsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //appBar: AppBar(title: const Text('Em Desenvolvimento')),
-      body: const Center(
-        child: Text(
-          'Desenvolvimento em andamento...',
-          style: TextStyle(fontSize: 20),
-        ),
+      backgroundColor: const Color(0xFF1B1A3B),
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          Image.asset(
+            'assets/background.png',
+            fit: BoxFit.cover,
+          ),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Image.asset('assets/logo.png', height: 50),
+                  ),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: const Text(
+                      'Recompensas estelares a caminho !',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Center(
+                    child: Image.asset(
+                      "assets/recompensas.png",
+                      width: 400,
+                      height: 400,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                 
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: const BottomNavBar(currentIndex: 2),
     );
