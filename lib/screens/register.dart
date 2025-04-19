@@ -60,14 +60,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           Image.asset(
-            'assets/background.png',
+            'assets/images/background.png',
             fit: BoxFit.cover,
           ),
           Positioned(
             top: 20,
             left: 20,
             child: Image.asset(
-              'assets/logo.png',
+              'assets/images/logo.png',
               height: 50,
             ),
           ),
@@ -75,7 +75,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             top: 0,
             right: 0,
             child: Image.asset(
-              'assets/planet1.png',
+              'assets/images/planet1.png',
               height: 200,
             ),
           ),

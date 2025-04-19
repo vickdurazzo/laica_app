@@ -1,0 +1,39 @@
+[
+    {
+      "id": "family",
+      "name": "Planeta da Familia",
+      "image": "assets/images/planets/familyPlanet.png",
+      "color": "#F29DC1",
+      "island":[
+
+      ]
+    },
+    {
+      "id": "earth",
+      "name": "Planeta da Terra",
+      "image": "assets/images/planets/earthPlanet.png",
+      "color": "#7CD2A8",
+      "island":[
+          
+      ]
+    },
+    {
+      "id": "fun",
+      "name": "Planeta da Diversão",
+      "image": "assets/images/planets/funPlanet.png",
+      "color": "#FFE483",
+      "island":[
+
+      ]
+    },
+    {
+      "id": "feelings",
+      "name": "Planeta dos Sentimentos",
+      "image": "assets/images/planets/emotionsPlanet.png",
+      "color": "#87A6FF",
+      "island":[
+
+      ]
+    }
+  ]
+  

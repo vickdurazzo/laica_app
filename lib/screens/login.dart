@@ -28,14 +28,14 @@ class _LoginScreenState extends State<LoginScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           Image.asset(
-            'assets/background.png',
+            'assets/images/background.png',
             fit: BoxFit.cover,
           ),
           Positioned(
             top: 20,
             left: 20,
             child: Image.asset(
-              'assets/logo.png',
+              'assets/images/logo.png',
               height: 50,
             ),
           ),
@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
             top: 0,
             right: 0,
             child: Image.asset(
-              'assets/planet1.png',
+              'assets/images/planet1.png',
               height: 200,
             ),
           ),
@@ -51,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
             bottom: 0,
             left: 0,
             child: Image.asset(
-              'assets/planet2.png',
+              'assets/images/planet2.png',
               height: 150,
             ),
           ),

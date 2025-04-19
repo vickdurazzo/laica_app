@@ -12,7 +12,7 @@ class WelcomeScreen extends StatelessWidget {
         fit: StackFit.expand,
         children: <Widget>[
           Image.asset(
-            'assets/background.png',
+            'assets/images/background.png',
             fit: BoxFit.cover,
           ),
           SafeArea(
@@ -25,7 +25,7 @@ class WelcomeScreen extends StatelessWidget {
                   Align(
                     alignment: Alignment.topRight,
                     child: Image.asset(
-                      'assets/logo.png',
+                      'assets/images/logo.png',
                       height: 50,
                     ),
                   ),

@@ -1,7 +1,11 @@
+
 import 'package:flutter/material.dart';
 import '../widgets/card_widget.dart';
+import '../widgets/image_widget.dart';
 import '../widgets/bottom_nav.dart';
-import '../widgets/image_widget.dart'; // Importa o componente de imagem
+import '../models/planet.dart';
+import '../utils/load_planets.dart';
+import 'islands.dart'; 
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({super.key});
@@ -18,71 +22,74 @@ class MenuScreen extends StatelessWidget {
             fit: BoxFit.cover,
           ),
           SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Image.asset(
-                      'assets/logo.png',
-                      height: 50,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Para onde vamos?',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
+            child: FutureBuilder<List<Planet>>(
+              future: loadPlanets(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator(color: Colors.white));
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Erro: ${snapshot.error}'));
+                }
 
-                  // ✅ Grid com os CardWidgets usando ImageWidget
-                  GridView.count(
-                    crossAxisCount: 2,
-                    shrinkWrap: true,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                    childAspectRatio: 1.2,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: const [
-                      CardWidget(
-                        child: ImageWidget(
-                          image: 'familyPlanet.png',
-                          width: double.infinity,
-                          height: double.infinity,
+                final planets = snapshot.data!;
+
+                return Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Image.asset(
+                          'assets/logo.png',
+                          height: 50,
                         ),
                       ),
-                      CardWidget(
-                        child: ImageWidget(
-                          image: 'heartPlanet.png',
-                          width: double.infinity,
-                          height: double.infinity,
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Para onde vamos?',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      CardWidget(
-                        child: ImageWidget(
-                          image: 'funPlanet.png',
-                          width: double.infinity,
-                          height: double.infinity,
-                        ),
-                      ),
-                      CardWidget(
-                        child: ImageWidget(
-                          image: 'emotionsPlanet.png',
-                          width: double.infinity,
-                          height: double.infinity,
+                      const SizedBox(height: 20),
+                      Expanded(
+                        child: GridView.builder(
+                          itemCount: planets.length,
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 16,
+                            mainAxisSpacing: 16,
+                            childAspectRatio: 1.2,
+                          ),
+                          itemBuilder: (context, index) {
+                            final planet = planets[index];
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => IslandScreen(planet: planet),
+                                  ),
+                                );
+                              },
+                              child: CardWidget(
+                                child: ImageWidget(
+                                  image: planet.image,
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ],
                   ),
-                ],
-              ),
+                );
+              },
             ),
           ),
         ],

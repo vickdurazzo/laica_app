@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import '../widgets/card_widget.dart';
+
 import '../widgets/bottom_nav.dart';
-import '../widgets/image_widget.dart'; // Importa o componente de imagem
 
 class ExploreScreen extends StatelessWidget {
   const ExploreScreen({super.key});
@@ -14,7 +13,7 @@ class ExploreScreen extends StatelessWidget {
         fit: StackFit.expand,
         children: <Widget>[
           Image.asset(
-            'assets/background.png',
+            'assets/images/background.png',
             fit: BoxFit.cover,
           ),
           SafeArea(
@@ -25,7 +24,7 @@ class ExploreScreen extends StatelessWidget {
                 children: <Widget>[
                   Align(
                     alignment: Alignment.topLeft,
-                    child: Image.asset('assets/logo.png', height: 50),
+                    child: Image.asset('assets/images/logo.png', height: 50),
                   ),
                   const SizedBox(height: 20),
                   Padding(
@@ -43,7 +42,7 @@ class ExploreScreen extends StatelessWidget {
                   const SizedBox(height: 20),
                   Center(
                     child: Image.asset(
-                      "assets/naveQuebrada.png",
+                      "assets/images/naveQuebrada.png",
                       width: 400,
                       height: 400,
                     ),

@@ -60,7 +60,12 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - assets/
+    - assets/images/background.png
+    - assets/images/logo.png
+    - assets/images/planets/
+    - assets/data/planets.json
+    - assets/images/planet1.png
+    - assets/images/planet2.png
 
 
   # To add assets to your application, add an assets section, like this:
