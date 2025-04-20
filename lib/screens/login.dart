@@ -22,21 +22,27 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final screenHeight = size.height;
+    final screenWidth = size.width;
+
     return Scaffold(
-      backgroundColor:  const Color(0xFF1B1A3B),
+      backgroundColor: const Color(0xFF1B1A3B),
       body: Stack(
         fit: StackFit.expand,
-        children: <Widget>[
+        children: [
           Image.asset(
             'assets/images/background.png',
             fit: BoxFit.cover,
           ),
+
+          // Elementos decorativos
           Positioned(
-            top: 20,
-            left: 20,
+            top: screenHeight * 0.03,
+            left: screenWidth * 0.05,
             child: Image.asset(
               'assets/images/logo.png',
-              height: 50,
+              height: screenHeight * 0.05,
             ),
           ),
           Positioned(
@@ -44,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
             right: 0,
             child: Image.asset(
               'assets/images/planet1.png',
-              height: 200,
+              height: screenHeight * 0.20,
             ),
           ),
           Positioned(
@@ -52,78 +58,87 @@ class _LoginScreenState extends State<LoginScreen> {
             left: 0,
             child: Image.asset(
               'assets/images/planet2.png',
-              height: 150,
+              height: screenHeight * 0.15,
             ),
           ),
+
           SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                Container(
-                  width: double.infinity,
-                  height: 190,
-                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Align(
-                        child: Text(
-                        'Exploradores',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      ),
-                      Align(
-                       child: Text(
-                        'Acessem sua aventuras agora !',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
-                      ),
-                      ),
-                    ],
-                  ),
-                ),
-                  
-                  CustomTextField(
-                    controller: _emailController,
-                    labelText: 'E-mail',
-                    suffixIcon: Icons.email,
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  CustomTextField(
-                    controller: _passwordController,
-                    labelText: 'Senha',
-                    suffixIcon: Icons.lock_outline,
-                    keyboardType: TextInputType.visiblePassword,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: screenHeight * 0.06),
 
-
+                    // Título e subtítulo
+                    Text(
+                      'Exploradores',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: screenWidth * 0.08,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
+                    SizedBox(height: screenHeight * 0.01),
+                    Text(
+                      'Acessem sua aventuras agora!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: screenWidth * 0.045,
+                      ),
+                    ),
+
+                    SizedBox(height: screenHeight * 0.04),
+
+                    // Inputs
+                    CustomTextField(
+                      controller: _emailController,
+                      labelText: 'E-mail',
+                      suffixIcon: Icons.email,
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    SizedBox(height: screenHeight * 0.02),
+                    CustomTextField(
+                      controller: _passwordController,
+                      labelText: 'Senha',
+                      suffixIcon: Icons.lock_outline,
+                      keyboardType: TextInputType.visiblePassword,
+                    ),
+
+                    SizedBox(height: screenHeight * 0.04),
+
+                    // Botão
                     PrimaryButton(
                       text: 'Decolar',
                       onPressed: () {
                         Navigator.pushNamed(context, '/menu');
                       },
                     ),
-                    const SizedBox(height: 20),
+
+                    SizedBox(height: screenHeight * 0.04),
+
+                    // Cadastro
                     GestureDetector(
                       onTap: () {
                         Navigator.pushNamed(context, '/register');
                       },
-                      child: const Text(
-                        'Nova astronauta ? Cadastre-sem',
+                      child: Text(
+                        'Nova astronauta? Cadastre-se',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: screenWidth * 0.045,
+                          decoration: TextDecoration.underline,
                         ),
                       ),
                     ),
-                ],
+
+                    SizedBox(height: screenHeight * 0.05),
+                  ],
+                ),
               ),
             ),
           ),

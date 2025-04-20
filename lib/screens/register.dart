@@ -20,7 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   bool _termsAgreed = false;
   bool _updatesSubscribed = false;
-  
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -39,8 +39,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _selectDate(context);
   }
 
-
-
   @override
   void dispose() {
     _familyNameController.dispose();
@@ -54,8 +52,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      backgroundColor:  const Color(0xFF1B1A3B),
+      backgroundColor: const Color(0xFF1B1A3B),
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
@@ -64,11 +65,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
             fit: BoxFit.cover,
           ),
           Positioned(
-            top: 20,
-            left: 20,
+            top: screenHeight * 0.03,
+            left: screenWidth * 0.05,
             child: Image.asset(
               'assets/images/logo.png',
-              height: 50,
+              height: screenHeight * 0.05,
             ),
           ),
           Positioned(
@@ -76,68 +77,67 @@ class _RegisterScreenState extends State<RegisterScreen> {
             right: 0,
             child: Image.asset(
               'assets/images/planet1.png',
-              height: 200,
+              height: screenHeight * 0.2,
             ),
           ),
           SafeArea(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(20.0),
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  const SizedBox(height: 20), // Espaçamento superior
-                  const Text(
+                  SizedBox(height: screenHeight * 0.04),
+                  Text(
                     'Cadastro de Exploradores',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 30,
+                      fontSize: screenWidth * 0.075,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: screenHeight * 0.03),
                   CustomTextField(
                     controller: _familyNameController,
                     labelText: 'Nome da Família',
                     suffixIcon: Icons.group,
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: screenHeight * 0.015),
                   CustomTextField(
                     controller: _childNameController,
                     labelText: 'Nome ou apelido da criança',
                     suffixIcon: Icons.person,
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: screenHeight * 0.015),
                   CustomTextField(
                     controller: _childBirthdayController,
                     labelText: 'Aniversário da criança',
                     suffixIcon: Icons.cake,
                     keyboardType: TextInputType.number,
-                    onTap: () {
-                      _showBirthdayPicker();
-                    },
+                    onTap: _showBirthdayPicker,
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: screenHeight * 0.015),
                   CustomTextField(
                     controller: _emailController,
                     labelText: 'E-mail',
                     suffixIcon: Icons.email,
                     keyboardType: TextInputType.emailAddress,
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: screenHeight * 0.015),
                   CustomTextField(
                     controller: _passwordController,
                     labelText: 'Senha',
                     suffixIcon: Icons.lock,
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: screenHeight * 0.015),
                   CustomTextField(
                     controller: _confirmPasswordController,
                     labelText: 'Confirme a senha',
                     suffixIcon: Icons.lock,
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: screenHeight * 0.02),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Checkbox(
                         value: _termsAgreed,
@@ -147,16 +147,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           });
                         },
                       ),
-                      const Expanded(
+                      Expanded(
                         child: Text(
-                          'Eu concordo com termos e politicas de privacidade',
-                          style: TextStyle(color: Colors.white),
+                          'Eu concordo com termos e políticas de privacidade',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: screenWidth * 0.038,
+                          ),
                         ),
                       ),
                     ],
                   ),
-                   const SizedBox(height: 10),
-                   Row(
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Checkbox(
                         value: _updatesSubscribed,
@@ -166,34 +169,40 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           });
                         },
                       ),
-                      const Expanded(
+                      Expanded(
                         child: Text(
-                          'Quero receber atualização e noticias (opcional)',
-                          style: TextStyle(color: Colors.white),
+                          'Quero receber atualizações e notícias (opcional)',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: screenWidth * 0.038,
+                          ),
                         ),
                       ),
                     ],
                   ),
-                   const SizedBox(height: 10),
+                  SizedBox(height: screenHeight * 0.02),
                   PrimaryButton(
                     text: 'Começar a Aventura',
                     onPressed: () {
-                      // Implemente a lógica para iniciar a aventura aqui
+                      // Implementar lógica de cadastro
                     },
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: screenHeight * 0.03),
                   GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(context, '/login');
                     },
-                    child: const Text(
-                      'Já tem cadastro na aventura ? Entrar no foguete',
+                    child: Text(
+                      'Já tem cadastro na aventura? Entrar no foguete',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: screenWidth * 0.043,
+                        decoration: TextDecoration.underline,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
+                  SizedBox(height: screenHeight * 0.04),
                 ],
               ),
             ),

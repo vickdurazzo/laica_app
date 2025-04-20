@@ -63,7 +63,7 @@ class ActivityDetailScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 30),
-                  PrimaryButton(
+                  SecondaryButton(
                     text: 'Lista de materiais',
                     onPressed: () {
                      
@@ -72,7 +72,7 @@ class ActivityDetailScreen extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 16),
-                   SecondaryButton(
+                   PrimaryButton(
                     text: 'Concluir atividade',
                     onPressed: () {
                      
