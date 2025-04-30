@@ -178,15 +178,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     onTap: () {
                       Navigator.pushNamed(context, '/login');
                     },
-                    child: Text(
-                      'Já tem cadastro na aventura? Entrar no foguete',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: screenWidth * 0.043,
-                        decoration: TextDecoration.underline,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+                       child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: 'Já tem cadastro ? ',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: screenWidth * 0.035,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: 'Entrar',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: screenWidth * 0.035,
+                              decoration: TextDecoration.underline,
+                            ),
+                                ),
+                              ],
+                            ),
+
+                          ),
                   ),
                   SizedBox(height: screenHeight * 0.04),
                 ],

@@ -20,21 +20,23 @@ class PrimaryButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFFD14EBA),
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+          
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          elevation: 0,
+          elevation: 2,
           shadowColor: const Color.fromRGBO(0, 0, 0, 0.25),
-          textStyle: const TextStyle(           
+          textStyle: const TextStyle(
             fontSize: 18,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w700,
             fontFamily: 'Poppins',
+            
           ),
           
         ),
         child: Text(
           text,
-          style: const TextStyle(color: Colors.white), // Texto branco
+          style: const TextStyle(color: Colors.white,height: 1.27), // Texto branco
         ),
       ),
     );

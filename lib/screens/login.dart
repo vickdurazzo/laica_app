@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:laica_app/widgets/app_subtitle.dart';
 import '../widgets/primary_button.dart';
+import '../widgets/app_title.dart';
 import '../widgets/form_input.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -37,87 +39,87 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
 
           
-
           SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(height: screenHeight * 0.06),
-
-                    // Título e subtítulo
-                    Text(
-                      'Exploradores',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: screenWidth * 0.08,
-                        fontWeight: FontWeight.bold,
+            child: Center(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: screenHeight * 0.04),
+                      AppTitle(text: 'Exploradores'),
+                      SizedBox(height: screenHeight * 0.01),
+                      AppSubtitle(text:'Acessem sua aventuras agora!'),
+                     
+          
+                      SizedBox(height: screenHeight * 0.04),
+          
+                      // Inputs
+                      CustomTextField(
+                        controller: _emailController,
+                        labelText: 'E-mail',
+                        suffixIcon: Icons.email,
+                        keyboardType: TextInputType.emailAddress,
                       ),
-                    ),
-                    SizedBox(height: screenHeight * 0.01),
-                    Text(
-                      'Acessem sua aventuras agora!',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: screenWidth * 0.045,
+                      SizedBox(height: screenHeight * 0.02),
+                      CustomTextField(
+                        controller: _passwordController,
+                        labelText: 'Senha',
+                        suffixIcon: Icons.lock_outline,
+                        keyboardType: TextInputType.visiblePassword,
                       ),
-                    ),
-
-                    SizedBox(height: screenHeight * 0.04),
-
-                    // Inputs
-                    CustomTextField(
-                      controller: _emailController,
-                      labelText: 'E-mail',
-                      suffixIcon: Icons.email,
-                      keyboardType: TextInputType.emailAddress,
-                    ),
-                    SizedBox(height: screenHeight * 0.02),
-                    CustomTextField(
-                      controller: _passwordController,
-                      labelText: 'Senha',
-                      suffixIcon: Icons.lock_outline,
-                      keyboardType: TextInputType.visiblePassword,
-                    ),
-
-                    SizedBox(height: screenHeight * 0.04),
-
-                    // Botão
-                    PrimaryButton(
-                      text: 'Decolar',
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/menu');
-                      },
-                    ),
-
-                    SizedBox(height: screenHeight * 0.04),
-
-                    // Cadastro
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/register');
-                      },
-                      child: Text(
-                        'Nova astronauta? Cadastre-se',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: screenWidth * 0.045,
-                          decoration: TextDecoration.underline,
+          
+                      SizedBox(height: screenHeight * 0.04),
+          
+                      // Botão
+                      PrimaryButton(
+                        text: 'Decolar',
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/menu');
+                        },
+                      ),
+          
+                      SizedBox(height: screenHeight * 0.04),
+          
+                      // Cadastro
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/register');
+                        },
+                        child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: 'Novos astronautas ? ',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: screenWidth * 0.035,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: 'Cadastrem-se',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: screenWidth * 0.035,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                              ],
+                            ),
                         ),
                       ),
-                    ),
-
-                    SizedBox(height: screenHeight * 0.05),
-                  ],
+          
+                      SizedBox(height: screenHeight * 0.04),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
+
         ],
       ),
     );

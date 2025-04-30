@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:laica_app/widgets/app_subtitle.dart';
+
+import 'package:laica_app/widgets/app_title.dart';
 import '../widgets/primary_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -13,93 +16,103 @@ class WelcomeScreen extends StatelessWidget {
       backgroundColor: const Color(0xFF1B1A3B),
       body: Stack(
         fit: StackFit.expand,
-        children: <Widget>[
+        children: [
+          // Background
           Image.asset(
             'assets/images/background.png',
             fit: BoxFit.cover,
           ),
-          SafeArea(
-            child: SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: screenHeight),
-                child: IntrinsicHeight(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: screenWidth * 0.08,
-                      vertical: screenHeight * 0.03,
+
+          // Logo at the top right
+          Positioned(
+            top: screenHeight * 0.05,
+            right: screenWidth * 0.08,
+            child: Image.asset(
+              'assets/images/logo.png',
+              height: screenHeight * 0.05,
+            ),
+          ),
+
+          // Central content with rocket + overlapping text
+          Align(
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Stack(
+                  clipBehavior: Clip.none,
+                  alignment: Alignment.center,
+                  children: [
+                    // Rocket
+                    Image.asset(
+                      'assets/images/rocket_dog.png',
+                      height: screenHeight * 0.35,
+                      fit: BoxFit.contain,
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: Image.asset(
-                            'assets/images/logo.png',
-                            height: screenHeight * 0.05,
-                          ),
-                        ),
-                        SizedBox(height: screenHeight * 0.04),
 
-                        // Imagem do foguete
-                        Center(
-                          child: Image.asset(
-                            'assets/images/rocket_dog.png',
-                            height: screenHeight * 0.3,
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                        SizedBox(height: screenHeight * 0.05),
-
-                        // Título
-                        Text(
-                          'Bem-vindos a\nmissão Laica',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: screenWidth * 0.08,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: screenHeight * 0.015),
-
-                        // Subtítulo
-                        Text(
-                          'Prontos para embarcar no foguete ?',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: screenWidth * 0.045,
-                          ),
-                        ),
-                        SizedBox(height: screenHeight * 0.04),
-
-                        // Botão
-                        PrimaryButton(
-                          text: 'Embarcar',
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/login');
-                          },
-                        ),
-                        SizedBox(height: screenHeight * 0.02),
-
-                        // Link de cadastro
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, '/register');
-                          },
-                          child: Text(
-                            'Novos astronautas ? Cadastre-se',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: screenWidth * 0.035,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                        ),
-                        const Spacer(), // Preenche o espaço restante se sobrar
-                      ],
+                    // Title text OVERLAPPING the bottom of the image
+                    Positioned(
+                      bottom: -screenHeight * 0.04,
+                      child: AppTitle(text: 'Bem-vindos à\nmissão Laica'),
+                      
                     ),
+                  ],
+                ),
+
+                const SizedBox(height: 40), // Enough to space subtitle from rocket
+                AppSubtitle(text: 'Prontos para embarcar no foguete ?'),
+               
+                const SizedBox(height: 30),
+
+                SizedBox(
+                  width: screenWidth * 0.8,
+                  child: PrimaryButton(
+                    text: 'Embarcar',
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/login');
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Bottom link
+          Positioned(
+            bottom: screenHeight * 0.03,
+            left: 0,
+            right: 0,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, '/register');
+              },
+              child: Center(
+                child: RichText(
+                  text: TextSpan(
+                    children: [
+                     
+                      TextSpan(
+                        text: 'Novos astronautas ? ',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w500,
+                            height: 22 / 14,
+                        ),
+                      ),
+                      TextSpan(
+                        text: 'Cadastrem-se',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w500,
+                            height: 22 / 14,
+                            decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),

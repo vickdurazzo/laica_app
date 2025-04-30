@@ -68,9 +68,23 @@ flutter:
     - assets/images/planet2.png
     - assets/images/naveQuebrada.png
     - assets/images/recompensas.png
+    - assets/images/rocket_dog.png
     - assets/images/family_photo.png
     - assets/images/islands/
     - assets/images/
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins/Poppins-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Poppins/Poppins-Italic.ttf
+          style: italic
+
+
+
+
+
 
 
   # To add assets to your application, add an assets section, like this:
