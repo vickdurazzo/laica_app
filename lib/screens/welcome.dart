@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:laica_app/widgets/app_subtitle.dart';
-
 import 'package:laica_app/widgets/app_title.dart';
 import '../widgets/primary_button.dart';
+import '../utils/device_utils.dart'; // Import the helper
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -11,6 +11,8 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+
+    final bool isMobile = DeviceUtils.isMobile();
 
     return Scaffold(
       backgroundColor: const Color(0xFF1B1A3B),
@@ -23,9 +25,30 @@ class WelcomeScreen extends StatelessWidget {
             fit: BoxFit.cover,
           ),
 
-          // Logo at the top right
+          // Show banner if NOT mobile
+          if (!isMobile)
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                color: Colors.redAccent,
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: const Center(
+                  child: Text(
+                    'Esta aplicação funciona melhor em dispositivos móveis.',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+          // Logo
           Positioned(
-            top: screenHeight * 0.05,
+            top: screenHeight * 0.05 + (isMobile ? 0 : 30), // offset banner if shown
             right: screenWidth * 0.08,
             child: Image.asset(
               'assets/images/logo.png',
@@ -33,7 +56,7 @@ class WelcomeScreen extends StatelessWidget {
             ),
           ),
 
-          // Central content with rocket + overlapping text
+          // Central content
           Align(
             alignment: Alignment.center,
             child: Column(
@@ -50,18 +73,16 @@ class WelcomeScreen extends StatelessWidget {
                       fit: BoxFit.contain,
                     ),
 
-                    // Title text OVERLAPPING the bottom of the image
+                    // Title text overlapping
                     Positioned(
                       bottom: -screenHeight * 0.06,
                       child: AppTitle(text: 'Bem-vindos à\nmissão Laica'),
-                      
                     ),
                   ],
                 ),
 
-                const SizedBox(height: 40), // Enough to space subtitle from rocket
+                const SizedBox(height: 40),
                 AppSubtitle(text: 'Prontos para embarcar no foguete ?'),
-               
                 const SizedBox(height: 30),
 
                 SizedBox(
@@ -88,28 +109,27 @@ class WelcomeScreen extends StatelessWidget {
               },
               child: Center(
                 child: RichText(
-                  text: TextSpan(
+                  text: const TextSpan(
                     children: [
-                     
                       TextSpan(
                         text: 'Novos astronautas ? ',
                         style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w500,
-                            height: 22 / 14,
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w500,
+                          height: 22 / 14,
                         ),
                       ),
                       TextSpan(
                         text: 'Cadastrem-se',
                         style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.bold,
-                            height: 22 / 14,
-                            decoration: TextDecoration.underline,
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.bold,
+                          height: 22 / 14,
+                          decoration: TextDecoration.underline,
                         ),
                       ),
                     ],
