@@ -3,14 +3,14 @@ import 'package:intl/intl.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/form_input.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+class ProfileEditScreen extends StatefulWidget {
+  const ProfileEditScreen({Key? key}) : super(key: key);
 
   @override
-  _RegisterScreenState createState() => _RegisterScreenState();
+  State<ProfileEditScreen> createState() => _ProfileEditScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _ProfileEditScreenState extends State<ProfileEditScreen> {
   final TextEditingController _familyNameController = TextEditingController();
   final TextEditingController _childNameController = TextEditingController();
   final TextEditingController _childBirthdayController = TextEditingController();
@@ -18,7 +18,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
 
-  bool _termsAgreed = false;
   bool _updatesSubscribed = false;
 
   Future<void> _selectDate(BuildContext context) async {
@@ -52,49 +51,54 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       backgroundColor: const Color(0xFF1B1A3B),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+        
+      ),
       body: Stack(
         fit: StackFit.expand,
-        children: <Widget>[
+        children: [
           Image.asset(
             'assets/images/background.png',
             fit: BoxFit.cover,
           ),
           
-          
           SafeArea(
             child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
+              padding: const EdgeInsets.all(20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(height: screenHeight * 0.04),
-                  Text(
-                    'Cadastro de Exploradores',
+                children: [
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Editar Perfil',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: screenWidth * 0.075,
+                      fontSize: 30,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: screenHeight * 0.03),
+                  const SizedBox(height: 20),
                   CustomTextField(
                     controller: _familyNameController,
                     labelText: 'Nome da Família',
                     suffixIcon: Icons.group,
                   ),
-                  SizedBox(height: screenHeight * 0.015),
+                  const SizedBox(height: 10),
                   CustomTextField(
                     controller: _childNameController,
                     labelText: 'Nome ou apelido da criança',
                     suffixIcon: Icons.person,
                   ),
-                  SizedBox(height: screenHeight * 0.015),
+                  const SizedBox(height: 10),
                   CustomTextField(
                     controller: _childBirthdayController,
                     labelText: 'Aniversário da criança',
@@ -102,50 +106,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     keyboardType: TextInputType.number,
                     onTap: _showBirthdayPicker,
                   ),
-                  SizedBox(height: screenHeight * 0.015),
+                  const SizedBox(height: 10),
                   CustomTextField(
                     controller: _emailController,
                     labelText: 'E-mail',
                     suffixIcon: Icons.email,
                     keyboardType: TextInputType.emailAddress,
                   ),
-                  SizedBox(height: screenHeight * 0.015),
+                  const SizedBox(height: 10),
                   CustomTextField(
                     controller: _passwordController,
                     labelText: 'Senha',
                     suffixIcon: Icons.lock,
                   ),
-                  SizedBox(height: screenHeight * 0.015),
+                  const SizedBox(height: 10),
                   CustomTextField(
                     controller: _confirmPasswordController,
                     labelText: 'Confirme a senha',
                     suffixIcon: Icons.lock,
                   ),
-                  SizedBox(height: screenHeight * 0.02),
+                  const SizedBox(height: 10),
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Checkbox(
-                        value: _termsAgreed,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _termsAgreed = value ?? false;
-                          });
-                        },
-                      ),
-                      Expanded(
-                        child: Text(
-                          'Eu concordo com termos e políticas de privacidade',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: screenWidth * 0.038,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Checkbox(
                         value: _updatesSubscribed,
@@ -155,40 +136,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           });
                         },
                       ),
-                      Expanded(
+                      const Expanded(
                         child: Text(
-                          'Quero receber atualizações e notícias (opcional)',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: screenWidth * 0.038,
-                          ),
+                          'Quero receber atualização e notícias (opcional)',
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: screenHeight * 0.02),
+                  const SizedBox(height: 10),
                   PrimaryButton(
-                    text: 'Começar a Aventura',
+                    text: 'Salvar Alterações',
                     onPressed: () {
-                      // Implementar lógica de cadastro
+                     
+                      Navigator.pushNamed(context, '/profile');
+                    
                     },
                   ),
-                  SizedBox(height: screenHeight * 0.03),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/login');
-                    },
-                    child: Text(
-                      'Já tem cadastro na aventura? Entrar no foguete',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: screenWidth * 0.043,
-                        decoration: TextDecoration.underline,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  SizedBox(height: screenHeight * 0.04),
                 ],
               ),
             ),
