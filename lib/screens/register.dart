@@ -64,22 +64,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             'assets/images/background.png',
             fit: BoxFit.cover,
           ),
-          Positioned(
-            top: screenHeight * 0.03,
-            left: screenWidth * 0.05,
-            child: Image.asset(
-              'assets/images/logo.png',
-              height: screenHeight * 0.05,
-            ),
-          ),
-          Positioned(
-            top: 0,
-            right: 0,
-            child: Image.asset(
-              'assets/images/planet1.png',
-              height: screenHeight * 0.2,
-            ),
-          ),
+          
+          
           SafeArea(
             child: SingleChildScrollView(
               padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),

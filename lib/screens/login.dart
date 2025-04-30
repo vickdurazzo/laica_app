@@ -36,31 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
             fit: BoxFit.cover,
           ),
 
-          // Elementos decorativos
-          Positioned(
-            top: screenHeight * 0.03,
-            left: screenWidth * 0.05,
-            child: Image.asset(
-              'assets/images/logo.png',
-              height: screenHeight * 0.05,
-            ),
-          ),
-          Positioned(
-            top: 0,
-            right: 0,
-            child: Image.asset(
-              'assets/images/planet1.png',
-              height: screenHeight * 0.20,
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            child: Image.asset(
-              'assets/images/planet2.png',
-              height: screenHeight * 0.15,
-            ),
-          ),
+          
 
           SafeArea(
             child: SingleChildScrollView(

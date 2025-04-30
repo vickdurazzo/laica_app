@@ -69,14 +69,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
             'assets/images/background.png',
             fit: BoxFit.cover,
           ),
-          Positioned(
-            top: 20,
-            left: 20,
-            child: Image.asset(
-              'assets/images/logo.png',
-              height: 50,
-            ),
-          ),
+          
           SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(20.0),
