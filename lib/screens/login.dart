@@ -51,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(height: screenHeight * 0.04),
                       AppTitle(text: 'Exploradores'),
                       SizedBox(height: screenHeight * 0.01),
-                      AppSubtitle(text:'Acessem sua aventuras agora!'),
+                      AppSubtitle(text:'Acessem suas aventuras agora!'),
                      
           
                       SizedBox(height: screenHeight * 0.04),
@@ -90,25 +90,32 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         child: RichText(
                             textAlign: TextAlign.center,
-                            text: TextSpan(
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: 'Novos astronautas ? ',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: screenWidth * 0.035,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: 'Cadastrem-se',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: screenWidth * 0.035,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                              ],
-                            ),
+                           text: TextSpan(
+                    children: [
+                     
+                      TextSpan(
+                        text: 'Novos astronautas ? ',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w500,
+                            height: 22 / 14,
+                        ),
+                      ),
+                      TextSpan(
+                        text: 'Cadastrem-se',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.bold,
+                            height: 22 / 14,
+                            decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ],
+                  ),
                         ),
                       ),
           

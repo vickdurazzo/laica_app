@@ -52,7 +52,7 @@ class WelcomeScreen extends StatelessWidget {
 
                     // Title text OVERLAPPING the bottom of the image
                     Positioned(
-                      bottom: -screenHeight * 0.04,
+                      bottom: -screenHeight * 0.06,
                       child: AppTitle(text: 'Bem-vindos à\nmissão Laica'),
                       
                     ),
@@ -107,7 +107,7 @@ class WelcomeScreen extends StatelessWidget {
                             color: Colors.white,
                             fontSize: 14,
                             fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.bold,
                             height: 22 / 14,
                             decoration: TextDecoration.underline,
                         ),
