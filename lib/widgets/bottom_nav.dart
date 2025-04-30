@@ -27,10 +27,10 @@ class BottomNavBar extends StatelessWidget {
     return BottomNavigationBar(
       currentIndex: currentIndex,
       onTap: (index) => _onTap(context, index),
-      selectedItemColor: Colors.deepPurple,
+      selectedItemColor: const Color(0xFFD14EBA),
       unselectedItemColor: Colors.grey,
       items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'Menu'),
+        BottomNavigationBarItem(icon: Icon(Icons.rocket_launch), label: 'Menu'),
         BottomNavigationBarItem(icon: Icon(Icons.explore), label: 'Explorar'),
         BottomNavigationBarItem(icon: Icon(Icons.card_giftcard), label: 'Recompensas'),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
