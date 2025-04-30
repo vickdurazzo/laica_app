@@ -5,7 +5,7 @@ class ProfileOption extends StatelessWidget {
   final String text;
   final VoidCallback onTap; // função que será executada ao clicar
 
-  const ProfileOption({
+  const ProfileOption({super.key, 
     required this.icon,
     required this.text,
     required this.onTap,

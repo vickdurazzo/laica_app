@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import '../widgets/card_widget.dart';
 import '../widgets/bottom_nav.dart';
-import '../widgets/image_widget.dart'; // Importa o componente de imagem
+// Importa o componente de imagem
 
 class RewardsScreen extends StatelessWidget {
   const RewardsScreen({super.key});

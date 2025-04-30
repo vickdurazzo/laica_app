@@ -5,7 +5,7 @@ import 'package:laica_app/widgets/primary_button.dart';
 class ActivityDetailScreen extends StatelessWidget {
   final String activityTitle;
 
-  const ActivityDetailScreen({Key? key, required this.activityTitle}) : super(key: key);
+  const ActivityDetailScreen({super.key, required this.activityTitle});
 
   @override
   Widget build(BuildContext context) {

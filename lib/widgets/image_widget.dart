@@ -8,11 +8,11 @@ class ImageWidget extends StatelessWidget {
       'https://assets.api.uizard.io/api/cdn/stream/b6ae151b-60f8-4898-bb92-f7ce37a05816.svg';
 
   const ImageWidget({
-    Key? key,
+    super.key,
     this.image,
     required this.width,
     required this.height,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,7 @@ import 'activities.dart'; // ajuste o caminho se necessário
 class IslandsScreen extends StatelessWidget {
   final Planet planet;
 
-  const IslandsScreen({Key? key, required this.planet}) : super(key: key);
+  const IslandsScreen({super.key, required this.planet});
 
   @override
   Widget build(BuildContext context) {

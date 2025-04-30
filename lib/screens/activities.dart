@@ -5,7 +5,7 @@ import 'activity_detail.dart';
 class ActivitiesScreen extends StatelessWidget {
   final Island island;
 
-  const ActivitiesScreen({Key? key, required this.island}) : super(key: key);
+  const ActivitiesScreen({super.key, required this.island});
 
   @override
   Widget build(BuildContext context) {
