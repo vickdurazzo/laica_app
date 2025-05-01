@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:laica_app/widgets/app_subtitle.dart';
+import 'package:laica_app/widgets/app_title.dart';
 import '../widgets/card_widget.dart';
 import '../widgets/image_widget.dart';
 import '../widgets/bottom_nav.dart';
@@ -38,22 +40,15 @@ class MenuScreen extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       Align(
-                        alignment: Alignment.topLeft,
+                        alignment: Alignment.topRight,
                         child: Image.asset(
                           'assets/images/logo.png',
                           height: 50,
                         ),
                       ),
                       const SizedBox(height: 20),
-                      const Text(
-                        'Para onde vamos?',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      AppTitle(text: "Para onde vamos?"),
+                      AppSubtitle(text: "Selecione um planeta"),
                       const SizedBox(height: 20),
                       Expanded(
                         child: GridView.builder(

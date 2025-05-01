@@ -44,15 +44,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void dispose() {
     _familyNameController.dispose();
     _childNameController.dispose();
-    _childBirthdayController.dispose();
-    _emailController.dispose();
+    _childBirthdayController.dispose(); 
+    _emailController.dispose(); 
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
@@ -106,6 +106,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     labelText: 'E-mail',
                     suffixIcon: Icons.email,
                     inputType: 'email',
+                  ),
+                  SizedBox(height: screenHeight * 0.015),
+                  CustomTextField(
+                    controller: _emailController,
+                    labelText: 'Celular',
+                    suffixIcon: Icons.phone,
+                    inputType: 'cellphone',
                   ),
                   SizedBox(height: screenHeight * 0.015),
                   CustomTextField(
