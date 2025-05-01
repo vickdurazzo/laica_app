@@ -15,6 +15,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _familyNameController = TextEditingController();
   final TextEditingController _childNameController = TextEditingController();
   final TextEditingController _childBirthdayController = TextEditingController();
+  final TextEditingController _cellphoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
@@ -26,7 +27,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
+      firstDate: DateTime(1900), 
       lastDate: DateTime.now(),
     );
     if (picked != null) {
@@ -46,6 +47,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _childNameController.dispose();
     _childBirthdayController.dispose(); 
     _emailController.dispose(); 
+    _cellphoneController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
@@ -109,7 +111,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   SizedBox(height: screenHeight * 0.015),
                   CustomTextField(
-                    controller: _emailController,
+                    controller: _cellphoneController,
                     labelText: 'Celular',
                     suffixIcon: Icons.phone,
                     inputType: 'cellphone',
