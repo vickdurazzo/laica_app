@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:laica_app/widgets/app_title.dart';
+
+
 import '../widgets/bottom_nav.dart';
-// Importa o componente de imagem
 
 class RewardsScreen extends StatelessWidget {
   const RewardsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+  
     return Scaffold(
       backgroundColor: const Color(0xFF1B1A3B),
       body: Stack(
@@ -17,28 +20,17 @@ class RewardsScreen extends StatelessWidget {
             fit: BoxFit.cover,
           ),
           SafeArea(
-            child: Padding(
+            child: SingleChildScrollView(
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Image.asset('assets/images/logo.png', height: 50),
-                  ),
+                children: <Widget>[    
                   const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: const Text(
-                      'Recompensas estelares a caminho !',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    child: AppTitle(text:'Recompensas estelares a caminho!'),
                     ),
-                  ),
+                  
                   const SizedBox(height: 20),
                   Center(
                     child: Image.asset(

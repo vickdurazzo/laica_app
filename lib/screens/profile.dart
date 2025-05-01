@@ -28,7 +28,7 @@ class ProfileScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Align(
-                      alignment: Alignment.topLeft,
+                      alignment: Alignment.topRight,
                       child: Image.asset('assets/images/logo.png', height: 50),
                     ),
                     const SizedBox(height: 20),

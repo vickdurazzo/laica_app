@@ -1,7 +1,9 @@
 // lib/utils/device_utils.dart
 @JS()
 library;
-
+import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:js/js.dart';
 
 @JS('navigator.userAgent')
@@ -15,4 +17,8 @@ class DeviceUtils {
         ua.contains('android') ||
         ua.contains('mobile');
   }
+  static double getScreenWidth(BuildContext context) {
+    return MediaQuery.of(context).size.width;
+  }
+
 }

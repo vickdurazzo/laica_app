@@ -61,14 +61,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         controller: _emailController,
                         labelText: 'E-mail',
                         suffixIcon: Icons.email,
-                        keyboardType: TextInputType.emailAddress,
+                        inputType: 'email',
                       ),
                       SizedBox(height: screenHeight * 0.02),
                       CustomTextField(
                         controller: _passwordController,
                         labelText: 'Senha',
                         suffixIcon: Icons.lock_outline,
-                        keyboardType: TextInputType.visiblePassword,
+                        inputType: 'password',
                       ),
           
                       SizedBox(height: screenHeight * 0.04),

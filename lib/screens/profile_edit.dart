@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:laica_app/widgets/app_title.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/form_input.dart';
 
@@ -77,33 +78,27 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(height: 20),
-                  const Text(
-                    'Editar Perfil',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                  AppTitle(text: 'Editar Perfil'),
                   const SizedBox(height: 20),
                   CustomTextField(
                     controller: _familyNameController,
                     labelText: 'Nome da Família',
                     suffixIcon: Icons.group,
+                    inputType: 'name',
                   ),
                   const SizedBox(height: 10),
                   CustomTextField(
                     controller: _childNameController,
                     labelText: 'Nome ou apelido da criança',
                     suffixIcon: Icons.person,
+                    inputType: 'name',
                   ),
                   const SizedBox(height: 10),
                   CustomTextField(
                     controller: _childBirthdayController,
                     labelText: 'Aniversário da criança',
                     suffixIcon: Icons.cake,
-                    keyboardType: TextInputType.number,
+                    inputType: 'date',
                     onTap: _showBirthdayPicker,
                   ),
                   const SizedBox(height: 10),
@@ -111,19 +106,21 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                     controller: _emailController,
                     labelText: 'E-mail',
                     suffixIcon: Icons.email,
-                    keyboardType: TextInputType.emailAddress,
+                    inputType: 'email',
                   ),
                   const SizedBox(height: 10),
                   CustomTextField(
                     controller: _passwordController,
                     labelText: 'Senha',
                     suffixIcon: Icons.lock,
+                    inputType: 'password',
                   ),
                   const SizedBox(height: 10),
                   CustomTextField(
                     controller: _confirmPasswordController,
                     labelText: 'Confirme a senha',
                     suffixIcon: Icons.lock,
+                    inputType: 'password',
                   ),
                   const SizedBox(height: 10),
                   Row(
@@ -139,7 +136,13 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                       const Expanded(
                         child: Text(
                           'Quero receber atualização e notícias (opcional)',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w500,
+                              height: 22 / 14,
+                              color: Colors.white),
+                          
                         ),
                       ),
                     ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:laica_app/utils/device_utils.dart';
 
 class PrimaryButton extends StatelessWidget {
   final String text;
@@ -12,8 +13,10 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 335,
+    double screenWidth = DeviceUtils.getScreenWidth(context);
+    double buttonWidth = screenWidth * 0.8; // 85% da largura da tela
+    return Container(
+      width: buttonWidth > 500 ? 500 : buttonWidth, // Max width of 500
       height: 48,
       child: ElevatedButton(
         onPressed: onPressed,
