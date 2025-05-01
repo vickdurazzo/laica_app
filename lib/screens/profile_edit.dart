@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -6,7 +7,9 @@ import 'package:laica_app/widgets/app_title.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/form_input.dart';
 import '../models/user.dart'; 
-import '../widgets/avatar_selector.dart'; // ajuste o caminho se necessário
+import '../widgets/avatar_selector.dart'; 
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 
 
 
@@ -84,21 +87,24 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
           child_id: _user!.children.isNotEmpty ? _user!.children[0].child_id : '',
           name: _childNameController.text,
           birthday: _childBirthdayController.text,
-          avatar: _user!.children.isNotEmpty ? _user!.children[0].avatar : '',
+          avatar: _selectedAvatar,
           progress: _user!.children.isNotEmpty ? _user!.children[0].progress : Progress(missions_completed: 0, stars: 0)
         )
       ],
       created_at: _user!.created_at,
       last_login: _user!.last_login,
+      
     );
 
     final String updatedJson = jsonEncode(_user!.toJson());
+    
 
     try {
-      await rootBundle.loadString('assets/data/user.json');
-      final file = 'assets/data/user.json';
-      await rootBundle.loadStructuredData(file, (value) async => json.decode(updatedJson));
-      print('Data saved successfully to: $file');
+        final directory = await getApplicationDocumentsDirectory();
+        final file = File(path.join(directory.path, 'user.json'));
+        await file.writeAsString(updatedJson);
+
+        print('Data saved successfully to: ${file.path}');
     } catch (e) {
       print('Error saving data: $e');
     }
@@ -165,10 +171,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                   const SizedBox(height: 20),
                   AppTitle(text: 'Editar Perfil'),
                   const SizedBox(height: 20),
-                  Text('Escolha um Avatar', style: TextStyle(color: Colors.white, fontSize: 16)),
-                  const SizedBox(height: 10),
+                  
+                  
                   AvatarSelector(
-                    selectedAvatar: _selectedAvatar,
                     onAvatarSelected: (avatarPath) {
                       setState(() {
                         _selectedAvatar = avatarPath;
