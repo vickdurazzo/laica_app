@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:laica_app/widgets/app_title.dart';
 import '../models/planet.dart';
 import 'activities.dart'; // ajuste o caminho se necessário
 
@@ -40,74 +41,64 @@ class IslandsScreen extends StatelessWidget {
             ),
           ),
 
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  
-                  
+        SafeArea(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // Add future static widgets here
+                        AppTitle(text: "Escolha uma ilha para explorar",fontSize: 25,),
+                        const SizedBox(height: 5),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.7, // Restrict ListView height
+                          child: ListView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: planet.island.length,
+                            itemBuilder: (context, index) {
+                              final island = planet.island[index];
 
-                  Expanded(
-                    child: ListView.builder(
-                      padding: const EdgeInsets.all(16),
-                      itemCount: planet.island.length,
-                      itemBuilder: (context, index) {
-                        final island = planet.island[index];
-                        final isEven = index % 2 == 0;
-
-                        final islandWidget = GestureDetector(
-                     
-                          onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ActivitiesScreen(island: island),
+                              return Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 12.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ActivitiesScreen(island: island),
+                                        ),
+                                      );
+                                    },
+                                    child: Column(
+                                      children: [
+                                        ClipOval(
+                                          child: Image.asset(
+                                            island.image,
+                                            fit: BoxFit.cover,
+                                            width: 180,
+                                            height: 180,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 15),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               );
                             },
-
-                          child: Column(
-                            children: [
-                              ClipOval(
-                                child: Image.asset(
-                                  island.image,
-                                  fit: BoxFit.cover,
-                                  width: 180,
-                                  height: 180,
-                                ),
-                              ),
-                              //const SizedBox(height: 8),
-                              
-                            ],
                           ),
-                        );
+                        ),
 
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 12.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: isEven
-                                ? [
-                                    Expanded(child: islandWidget),
-                                    const Expanded(child: SizedBox()),
-                                  ]
-                                : [
-                                    const Expanded(child: SizedBox()),
-                                    Expanded(child: islandWidget),
-                                  ],
-                          ),
-                        );
-                      },
+                        // Add more widgets below the list here if needed
+                        const SizedBox(height: 24),
+                      ],
                     ),
                   ),
-
-                ],
-              ),
-              
-            )
-            
+                ),
           ),
+
         ],
       ),
     );

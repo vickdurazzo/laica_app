@@ -49,11 +49,11 @@ class ActivitiesScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final activity = island.activities[index];
                         final isEven = index % 2 == 0;
-                        final isAccessible = activity.status == "available" || activity.status == "completed";
+                        final isAccessible = activity.status != "blocked";
 
                         final activityWidget = GestureDetector(
                           onTap: isAccessible
-                              ? () {
+                              ?() {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -64,6 +64,7 @@ class ActivitiesScreen extends StatelessWidget {
                               : null,
                           child: Column(
                             children: [
+                              
                               Stack(
                                 alignment: Alignment.center,
                                 children: [
@@ -75,9 +76,23 @@ class ActivitiesScreen extends StatelessWidget {
                                       height: 100,
                                     ),
                                   ),
-                                  
+                                
                                 ],
                               ),
+                              if(isAccessible)
+                                Padding(
+                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                    child: Text(
+                                      activity.name,
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: "Poppins",
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold
+                                      ),
+                                    )
+                                ),
                             ],
                           ),
                         );

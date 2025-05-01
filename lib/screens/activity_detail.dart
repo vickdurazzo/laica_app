@@ -1,11 +1,79 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:laica_app/widgets/secondary_button.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:laica_app/widgets/primary_button.dart';
 
-class ActivityDetailScreen extends StatelessWidget {
+class ActivityDetailScreen extends StatefulWidget {
   final String activityTitle;
 
   const ActivityDetailScreen({super.key, required this.activityTitle});
+
+  @override
+  State<ActivityDetailScreen> createState() => _ActivityDetailScreenState();
+}
+
+class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
+  File? _selectedFile;
+
+  Future<void> _pickMedia() async {
+    final ImagePicker picker = ImagePicker();
+
+    final XFile? pickedFile = await showModalBottomSheet<XFile?>(
+      context: context,
+      builder: (_) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.image),
+                title: const Text('Selecionar Imagem'),
+                onTap: () async {
+                  final file = await picker.pickImage(source: ImageSource.gallery);
+                  Navigator.pop(context, file);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.videocam),
+                title: const Text('Selecionar Vídeo'),
+                onTap: () async {
+                  final file = await picker.pickVideo(source: ImageSource.gallery);
+                  Navigator.pop(context, file);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    if (pickedFile != null) {
+      setState(() {
+        _selectedFile = File(pickedFile.path);
+      });
+
+      // Simula o envio (você pode implementar upload real depois)
+      await Future.delayed(const Duration(seconds: 2));
+
+      // Mostra popup de sucesso
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: const Text("Atividade concluída"),
+          content: const Text("Envio realizado com sucesso!\nA próxima atividade será desbloqueada em breve."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Fecha popup
+                Navigator.pop(context); // Volta para a tela anterior
+              },
+              child: const Text("OK"),
+            ),
+          ],
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +87,7 @@ class ActivityDetailScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          activityTitle,
+          widget.activityTitle,
           style: const TextStyle(color: Colors.white),
         ),
       ),
@@ -44,7 +112,7 @@ class ActivityDetailScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(12),
                     child: Column(
                       children: [
-                        Image.asset('assets/images/sample_video.png'), // placeholder
+                        Image.asset('assets/images/sample_video.png'),
                         const SizedBox(height: 8),
                         Slider(
                           value: 0.5,
@@ -63,22 +131,9 @@ class ActivityDetailScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 30),
-                  SecondaryButton(
-                    text: 'Lista de materiais',
-                    onPressed: () {
-                     
-                      Navigator.pushNamed(context, '/menu');
-                    
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                   PrimaryButton(
+                  PrimaryButton(
                     text: 'Concluir atividade',
-                    onPressed: () {
-                     
-                      Navigator.pushNamed(context, '/menu');
-                    
-                    },
+                    onPressed: _pickMedia,
                   ),
                 ],
               ),

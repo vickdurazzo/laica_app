@@ -4,16 +4,16 @@
     "email": "contato@oliveiras.com",
     "password_hash": "password_hash",
     "accepted_terms": true,
-    "receive_updates": false,
+    "receive_updates": true,
     "cellphone": 13996559587,
     "children": [
       {
         "child_id": "kid001",
         "name": "Arthur",
         "birthday": "2018-07-15",
-        "avatar": "assets/images/family_photo.png",
+        "avatar": "assets/images/avatar/avatar1.png",
         "progress": {
-          "missions_completed": 3,
+          "missions_completed": 5,
           "stars": 23
         }
       }

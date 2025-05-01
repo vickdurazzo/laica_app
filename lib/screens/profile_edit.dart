@@ -1,8 +1,14 @@
+import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:laica_app/widgets/app_title.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/form_input.dart';
+import '../models/user.dart'; 
+import '../widgets/avatar_selector.dart'; // ajuste o caminho se necessário
+
+
 
 class ProfileEditScreen extends StatefulWidget {
   const ProfileEditScreen({super.key});
@@ -12,14 +18,92 @@ class ProfileEditScreen extends StatefulWidget {
 }
 
 class _ProfileEditScreenState extends State<ProfileEditScreen> {
+  User? _user;
+
   final TextEditingController _familyNameController = TextEditingController();
   final TextEditingController _childNameController = TextEditingController();
   final TextEditingController _childBirthdayController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _cellphoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
-
   bool _updatesSubscribed = false;
+  String _selectedAvatar = '';
+
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+    Future<void> _loadUserData() async {
+    try {
+      final String data = await rootBundle.loadString('assets/data/user.json');
+      final Map<String, dynamic> jsonResult = json.decode(data);
+      setState(() {
+        _user = User.fromJson(jsonResult);
+        _updateControllersWithUserData();
+      });
+    } catch (e) {
+      print('Error loading user data: $e');
+    }
+  }
+
+  void _updateControllersWithUserData() {
+    if (_user == null) return;
+
+  _familyNameController.text = _user?.family_name ?? '';
+  _emailController.text = _user?.email ?? '';
+  _cellphoneController.text = _user!.cellphone.toString();
+  _passwordController.text = '';
+  _confirmPasswordController.text = '';
+  _updatesSubscribed = _user!.receive_updates;
+
+  if (_user!.children.isNotEmpty) {
+    final child = _user!.children[0];
+    _childNameController.text = child.name;
+    _childBirthdayController.text = child.birthday;
+  }
+  _selectedAvatar = _user!.children.isNotEmpty ? _user!.children[0].avatar : '';
+}
+
+
+  Future<void> _saveChanges() async {
+    if (_user == null) return;
+
+    _user = User(
+      user_id: _user!.user_id,
+      family_name: _familyNameController.text,
+      email: _emailController.text,
+      password_hash: _user!.password_hash,
+      accepted_terms: _user!.accepted_terms,
+      receive_updates: _updatesSubscribed,
+      cellphone: int.parse(_cellphoneController.text),
+      children: [
+        Child(
+          child_id: _user!.children.isNotEmpty ? _user!.children[0].child_id : '',
+          name: _childNameController.text,
+          birthday: _childBirthdayController.text,
+          avatar: _user!.children.isNotEmpty ? _user!.children[0].avatar : '',
+          progress: _user!.children.isNotEmpty ? _user!.children[0].progress : Progress(missions_completed: 0, stars: 0)
+        )
+      ],
+      created_at: _user!.created_at,
+      last_login: _user!.last_login,
+    );
+
+    final String updatedJson = jsonEncode(_user!.toJson());
+
+    try {
+      await rootBundle.loadString('assets/data/user.json');
+      final file = 'assets/data/user.json';
+      await rootBundle.loadStructuredData(file, (value) async => json.decode(updatedJson));
+      print('Data saved successfully to: $file');
+    } catch (e) {
+      print('Error saving data: $e');
+    }
+  }
+
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -45,6 +129,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     _childNameController.dispose();
     _childBirthdayController.dispose();
     _emailController.dispose();
+    _cellphoneController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
@@ -80,6 +165,17 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                   const SizedBox(height: 20),
                   AppTitle(text: 'Editar Perfil'),
                   const SizedBox(height: 20),
+                  Text('Escolha um Avatar', style: TextStyle(color: Colors.white, fontSize: 16)),
+                  const SizedBox(height: 10),
+                  AvatarSelector(
+                    selectedAvatar: _selectedAvatar,
+                    onAvatarSelected: (avatarPath) {
+                      setState(() {
+                        _selectedAvatar = avatarPath;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 20),
                   CustomTextField(
                     controller: _familyNameController,
                     labelText: 'Nome da Família',
@@ -94,12 +190,17 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                     inputType: 'name',
                   ),
                   const SizedBox(height: 10),
-                  CustomTextField(
-                    controller: _childBirthdayController,
-                    labelText: 'Aniversário da criança',
-                    suffixIcon: Icons.cake,
-                    inputType: 'date',
+                  GestureDetector(
                     onTap: _showBirthdayPicker,
+                    child: AbsorbPointer(
+                      child: CustomTextField(
+                        controller: _childBirthdayController,
+                        labelText: 'Aniversário da criança',
+                        suffixIcon: Icons.cake,
+                        inputType: 'date',
+                        
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 10),
                   CustomTextField(
@@ -110,11 +211,19 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                   ),
                   const SizedBox(height: 10),
                   CustomTextField(
+                    controller: _cellphoneController,
+                    labelText: 'Celular',
+                    suffixIcon: Icons.phone,
+                    inputType: 'cellphone',
+                  ),
+                  const SizedBox(height: 10),
+                  CustomTextField(
                     controller: _passwordController,
                     labelText: 'Senha',
                     suffixIcon: Icons.lock,
                     inputType: 'password',
                   ),
+
                   const SizedBox(height: 10),
                   CustomTextField(
                     controller: _confirmPasswordController,
@@ -150,11 +259,10 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                   const SizedBox(height: 10),
                   PrimaryButton(
                     text: 'Salvar Alterações',
-                    onPressed: () {
-                     
+                    onPressed: () async {
+                      await _saveChanges();
                       Navigator.pushNamed(context, '/profile');
-                    
-                    },
+                    }
                   ),
                 ],
               ),
@@ -165,3 +273,4 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     );
   }
 }
+

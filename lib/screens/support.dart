@@ -58,7 +58,7 @@ class _SupportScreenState extends State<SupportScreen> {
                   children: [
                     const Text(
                       'Precisa de ajuda? Envie sua dúvida abaixo:',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      style: TextStyle(color: Colors.white, fontSize: 16,fontFamily: "Poppins"),
                     ),
                     const SizedBox(height: 20),
                     TextFormField(

@@ -31,6 +31,9 @@ dependencies:
   flutter:
     sdk: flutter
   js: ^0.6.7
+
+  image_picker: ^1.0.4
+
     
   intl: ^0.19.0
 
@@ -38,6 +41,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:
@@ -65,6 +69,7 @@ flutter:
     - assets/images/logo.png
     - assets/images/planets/
     - assets/data/planets.json
+    - assets/data/user.json
     - assets/images/planet1.png
     - assets/images/planet2.png
     - assets/images/naveQuebrada.png
@@ -73,6 +78,8 @@ flutter:
     - assets/images/family_photo.png
     - assets/images/islands/
     - assets/images/
+    - assets/images/avatar/
+
   fonts:
     - family: Poppins
       fonts:
