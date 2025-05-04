@@ -2,11 +2,18 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:laica_app/widgets/primary_button.dart';
+import 'package:video_player/video_player.dart';
+import 'package:chewie/chewie.dart';
 
 class ActivityDetailScreen extends StatefulWidget {
   final String activityTitle;
+  final String activityVideo;
 
-  const ActivityDetailScreen({super.key, required this.activityTitle});
+  const ActivityDetailScreen({
+    super.key,
+    required this.activityTitle,
+    required this.activityVideo,
+  });
 
   @override
   State<ActivityDetailScreen> createState() => _ActivityDetailScreenState();
@@ -14,9 +21,40 @@ class ActivityDetailScreen extends StatefulWidget {
 
 class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
   File? _selectedFile;
+  late VideoPlayerController _videoController;
+  ChewieController? _chewieController;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializePlayer();
+  }
+
+  Future<void> _initializePlayer() async {
+    _videoController = VideoPlayerController.networkUrl(Uri.parse(widget.activityVideo));
+    await _videoController.initialize();
+
+    _chewieController = ChewieController(
+      videoPlayerController: _videoController,
+      autoPlay: true,
+      looping: true,
+      allowFullScreen: true,
+      allowPlaybackSpeedChanging: true,
+      allowMuting: true,
+    );
+
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _videoController.dispose();
+    _chewieController?.dispose();
+    super.dispose();
+  }
 
   Future<void> _pickMedia() async {
-    final ImagePicker picker = ImagePicker();
+    final picker = ImagePicker();
 
     final XFile? pickedFile = await showModalBottomSheet<XFile?>(
       context: context,
@@ -32,15 +70,7 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
                   final file = await picker.pickImage(source: ImageSource.gallery);
                   Navigator.pop(context, file);
                 },
-              ),
-              ListTile(
-                leading: const Icon(Icons.videocam),
-                title: const Text('Selecionar Vídeo'),
-                onTap: () async {
-                  final file = await picker.pickVideo(source: ImageSource.gallery);
-                  Navigator.pop(context, file);
-                },
-              ),
+              )
             ],
           ),
         );
@@ -52,10 +82,8 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
         _selectedFile = File(pickedFile.path);
       });
 
-      // Simula o envio (você pode implementar upload real depois)
       await Future.delayed(const Duration(seconds: 2));
 
-      // Mostra popup de sucesso
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
@@ -64,8 +92,8 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // Fecha popup
-                Navigator.pop(context); // Volta para a tela anterior
+                Navigator.pop(context);
+                Navigator.pop(context);
               },
               child: const Text("OK"),
             ),
@@ -100,36 +128,20 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
             ),
           ),
           SafeArea(
-            child: Padding(
+            child: SingleChildScrollView(
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
+                  if (_chewieController != null && _videoController.value.isInitialized)
+                    AspectRatio(
+                      aspectRatio: _videoController.value.aspectRatio,
+                      child: Chewie(controller: _chewieController!),
+                    )
+                  else
+                    const SizedBox(
+                      height: 200,
+                      child: Center(child: CircularProgressIndicator()),
                     ),
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                      children: [
-                        Image.asset('assets/images/sample_video.png'),
-                        const SizedBox(height: 8),
-                        Slider(
-                          value: 0.5,
-                          onChanged: (value) {},
-                          activeColor: Colors.purpleAccent,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Icon(Icons.play_arrow, color: Colors.black),
-                            Icon(Icons.fullscreen, color: Colors.black),
-                            Icon(Icons.volume_up, color: Colors.black),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
                   const SizedBox(height: 30),
                   PrimaryButton(
                     text: 'Concluir atividade',

@@ -12,14 +12,14 @@
         "activities": [
           {
             "id": "activity_1",
-            "name": "Abraçando a família",
-            "video": "assets/videos/hug_family.mp4",
-            "status": "completed"
+            "name": "Nada de espiar",
+            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746393382/planeta_sentimento_ilha_cozinha_olhos_vendados_rzpdtd.mp4",
+            "status": "available"
           },
           {
             "id": "activity_2",
-            "name": "Corrente de carinho",
-            "video": "assets/videos/care_chain.mp4",
+            "name": "Receita da família",
+            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746393522/planeta_sentimento_ilha_cozinha_receita_vp8tyw.mp4",
             "status": "blocked"
           }
         ]
@@ -31,15 +31,21 @@
         "activities": [
           {
             "id": "activity_3",
-            "name": "Cartinha de agradecimento",
-            "video": "assets/videos/thank_you_letter.mp4",
-            "status": "completed"
+            "name": "Minha herança",
+            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746394232/planeta_sentimento_ilha_uniao_desenho_fvs0tk.mp4",
+            "status": "available"
+          },
+          {
+            "id": "activity_3",
+            "name": "Pizza é União",
+            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746393901/planeta_sentimento_ilha_reflexoes_pizza_kncvc0.mp4",
+            "status": "blocked"
           },
           {
             "id": "activity_4",
-            "name": "Desenho da família",
-            "video": "assets/videos/family_drawing.mp4",
-            "status": "available"
+            "name": "Conhecimento de Ansião",
+            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746394019/planeta_sentimento_ilha_uniao_ansi%C3%A3o_opuyk7.mp4",
+            "status": "blocked"
           }
         ]
       }
@@ -58,14 +64,14 @@
         "activities": [
           {
             "id": "activity_5",
-            "name": "Separando o lixo",
-            "video": "assets/videos/recycling.mp4",
+            "name": "Um presente para o mundo",
+            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746394654/planeta_terra_ilha_sustentabilidade_planta_1_pvohih.mp4",
             "status": "available"
           },
           {
             "id": "activity_6",
-            "name": "Brinquedo reciclado",
-            "video": "assets/videos/recycled_toy.mp4",
+            "name": "Nada se destroi, tudo se transforma",
+            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746394785/planeta_terra_ilha_sustentabilidade_reciclagem_k7l9gb.mp4",
             "status": "blocked"
           }
         ]
@@ -77,14 +83,14 @@
         "activities": [
           {
             "id": "activity_7",
-            "name": "Plantando uma muda",
-            "video": "assets/videos/plant_seed.mp4",
+            "name": "Sorriso no rosto",
+            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746394383/planeta_terra_ilha_solidariedade_5_feli_exuv6s.mp4",
             "status": "available"
           },
           {
             "id": "activity_8",
-            "name": "Regando com amor",
-            "video": "assets/videos/watering_plants.mp4",
+            "name": "Heroi do dia",
+            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746394512/planeta_terra_ilha_solidariedade_doa%C3%A7%C3%A3o_ze4qxc.mp4",
             "status": "blocked"
           }
         ]
@@ -104,16 +110,24 @@
         "activities": [
           {
             "id": "activity_9",
-            "name": "Contando piadas",
-            "video": "assets/videos/telling_jokes.mp4",
+            "name": "Sombras",
+            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746392418/planeta_diversao_ilha_diversao_sombras_nu3nrx.mp4",
+            "status": "available"
+          },
+          {
+            "id": "activity_10",
+            "name": "Oleo",
+            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746392705/planeta_diversao_ilha_experiencia_oleo_l62edx.mp4",
             "status": "blocked"
           },
           {
             "id": "activity_10",
-            "name": "Desfile maluco",
-            "video": "assets/videos/crazy_parade.mp4",
+            "name": "Ovo",
+            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746393032/planeta_diversao_ilha_experiencia_ovo_k6jofy.mp4",
             "status": "blocked"
           }
+         
+
         ]
       },
       {
@@ -123,16 +137,17 @@
         "activities": [
           {
             "id": "activity_11",
-            "name": "Batalha de sons",
-            "video": "assets/videos/sound_battle.mp4",
-            "status": "blocked"
+            "name": "Foguete",
+            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746390250/ia5ygjdyomz2loocgxlg.mp4",
+            "status": "available"
           },
           {
-            "id": "activity_12",
-            "name": "Instrumentos de papel",
-            "video": "assets/videos/paper_instruments.mp4",
+            "id": "activity_10",
+            "name": "Som na caixa",
+            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746393155/planeta_diversao_ilha_experiencia_som_ocjxxw.mp4",
             "status": "blocked"
           }
+          
         ]
       }
     ]
@@ -150,16 +165,11 @@
         "activities": [
           {
             "id": "activity_13",
-            "name": "Dança da felicidade",
-            "video": "assets/videos/happy_dance.mp4",
+            "name": "Espelho,espelho meu",
+            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746393711/planeta_sentimento_ilha_reflexoes_espelho_beyfcz.mp4",
             "status": "available"
-          },
-          {
-            "id": "activity_14",
-            "name": "Jogo da alegria",
-            "video": "assets/videos/happy_game.mp4",
-            "status": "blocked"
           }
+         
         ]
       },
       {
@@ -169,16 +179,11 @@
         "activities": [
           {
             "id": "activity_15",
-            "name": "Falando dos sentimentos",
-            "video": "assets/videos/talking_feelings.mp4",
+            "name": "Alguém especial",
+            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746393616/planeta_sentimento_ilha_emo%C3%A7%C3%B5es_carta_bvj6bx.mp4",
             "status": "available"
-          },
-          {
-            "id": "activity_16",
-            "name": "Abraço quentinho",
-            "video": "assets/videos/warm_hug.mp4",
-            "status": "blocked"
           }
+         
         ]
       }
     ]

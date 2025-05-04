@@ -15,6 +15,36 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  void _handleLogin() {
+      final email = _emailController.text.trim();
+      final password = _passwordController.text;
+
+      if (email.isEmpty || password.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Preencha todos os campos')),
+        );
+        return;
+      }
+
+      // Simulação de validação
+      const mockEmail = 'teste';
+      const mockPassword = '123';
+
+      if (email == mockEmail && password == mockPassword) {
+        print('Login realizado com sucesso!');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Login realizado com sucesso!')),
+        );
+        Navigator.pushNamed(context, '/menu');
+      } else {
+        print('Credenciais inválidas.');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('E-mail ou senha incorretos')),
+        );
+      }
+    }
+
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -76,9 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       // Botão
                       PrimaryButton(
                         text: 'Decolar',
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/menu');
-                        },
+                        onPressed:_handleLogin,
                       ),
           
                       SizedBox(height: screenHeight * 0.04),

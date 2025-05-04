@@ -1,8 +1,14 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:laica_app/models/user.dart';
 import 'package:laica_app/widgets/app_title.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/form_input.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -36,6 +42,70 @@ class _RegisterScreenState extends State<RegisterScreen> {
       });
     }
   }
+
+  void _handleRegister() {
+        // Validações básicas
+        if (_familyNameController.text.isEmpty ||
+            _childNameController.text.isEmpty ||
+            _childBirthdayController.text.isEmpty ||
+            _emailController.text.isEmpty ||
+            _cellphoneController.text.isEmpty ||
+            _passwordController.text.isEmpty ||
+            _confirmPasswordController.text.isEmpty) {
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Por favor, preencha todos os campos.')),
+          );
+          
+        
+          return;
+        }
+
+        if (_passwordController.text != _confirmPasswordController.text) {
+           ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('As senhas não coincidem.')),
+          );
+          
+          return;
+        }
+
+        if (!_termsAgreed) {
+           ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Você precisa aceitar os termos e políticas.')),
+          );
+        
+          return;
+        }
+
+        // Criar objeto User
+        final uuid = const Uuid();
+        final now = DateTime.now().toIso8601String();
+
+        final user = User(
+          user_id: uuid.v4(),
+          family_name: _familyNameController.text,
+          email: _emailController.text,
+          password_hash: _passwordController.text, // Em um app real, você deveria aplicar um hash
+          accepted_terms: _termsAgreed,
+          receive_updates: _updatesSubscribed,
+          cellphone: int.tryParse(_cellphoneController.text) ?? 0,
+          children: [
+            Child(
+              child_id: uuid.v4(),
+              name: _childNameController.text,
+              birthday: _childBirthdayController.text,
+              avatar: "default.png", // Pode ajustar conforme necessidade
+              progress: Progress(missions_completed: 0, stars: 0),
+            )
+          ],
+          created_at: now,
+          last_login: now,
+        );
+
+        final jsonString = jsonEncode(user.toJson());
+        print('Usuário cadastrado com sucesso:\n$jsonString');
+      }
+
 
   void _showBirthdayPicker() {
     _selectDate(context);
@@ -188,9 +258,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   SizedBox(height: screenHeight * 0.02),
                   PrimaryButton(
                     text: 'Começar a Aventura',
-                    onPressed: () {
-                      // Implementar lógica de cadastro
-                    },
+                    onPressed: _handleRegister,
                   ),
                   SizedBox(height: screenHeight * 0.03),
                   GestureDetector(

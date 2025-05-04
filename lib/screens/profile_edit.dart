@@ -72,43 +72,41 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
 
 
   Future<void> _saveChanges() async {
-    if (_user == null) return;
+      if (_user == null) return;
 
-    _user = User(
-      user_id: _user!.user_id,
-      family_name: _familyNameController.text,
-      email: _emailController.text,
-      password_hash: _user!.password_hash,
-      accepted_terms: _user!.accepted_terms,
-      receive_updates: _updatesSubscribed,
-      cellphone: int.parse(_cellphoneController.text),
-      children: [
-        Child(
-          child_id: _user!.children.isNotEmpty ? _user!.children[0].child_id : '',
-          name: _childNameController.text,
-          birthday: _childBirthdayController.text,
-          avatar: _selectedAvatar,
-          progress: _user!.children.isNotEmpty ? _user!.children[0].progress : Progress(missions_completed: 0, stars: 0)
-        )
-      ],
-      created_at: _user!.created_at,
-      last_login: _user!.last_login,
-      
-    );
+      _user = User(
+        user_id: _user!.user_id,
+        family_name: _familyNameController.text,
+        email: _emailController.text,
+        password_hash: _user!.password_hash,
+        accepted_terms: _user!.accepted_terms,
+        receive_updates: _updatesSubscribed,
+        cellphone: int.tryParse(_cellphoneController.text) ?? 0,
+        children: [
+          Child(
+            child_id: _user!.children.isNotEmpty ? _user!.children[0].child_id : '',
+            name: _childNameController.text,
+            birthday: _childBirthdayController.text,
+            avatar: _selectedAvatar,
+            progress: _user!.children.isNotEmpty
+                ? _user!.children[0].progress
+                : Progress(missions_completed: 0, stars: 0),
+          ),
+        ],
+        created_at: _user!.created_at,
+        last_login: _user!.last_login,
+      );
 
-    final String updatedJson = jsonEncode(_user!.toJson());
-    
+      // Exibe os dados atualizados como JSON no terminal
+      final String updatedJson = jsonEncode(_user!.toJson());
+      print('Dados atualizados do usuário:\n$updatedJson');
 
-    try {
-        final directory = await getApplicationDocumentsDirectory();
-        final file = File(path.join(directory.path, 'user.json'));
-        await file.writeAsString(updatedJson);
-
-        print('Data saved successfully to: ${file.path}');
-    } catch (e) {
-      print('Error saving data: $e');
+      // Opcional: também pode exibir uma confirmação visual no app
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Dados atualizados com sucesso!')),
+      );
     }
-  }
+
 
 
   Future<void> _selectDate(BuildContext context) async {
@@ -172,14 +170,16 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                   AppTitle(text: 'Editar Perfil'),
                   const SizedBox(height: 20),
                   
-                  
-                  AvatarSelector(
+                  /*
+                   AvatarSelector(
                     onAvatarSelected: (avatarPath) {
                       setState(() {
                         _selectedAvatar = avatarPath;
                       });
                     },
                   ),
+                  */
+                 
                   const SizedBox(height: 20),
                   CustomTextField(
                     controller: _familyNameController,

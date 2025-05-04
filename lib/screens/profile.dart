@@ -59,12 +59,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: Image.asset('assets/images/logo.png', height: 50),
                         ),
                         const SizedBox(height: 20),
+                        /*
                         CircleAvatar(
                           radius: 50,
                           backgroundImage: _user!.children.isNotEmpty
                               ? AssetImage(_user!.children.first.avatar)
                               : const AssetImage('assets/images/family_photo.png'),
                         ),
+                        */
+                        
                         const SizedBox(height: 16),
                         Text(
                           _user!.family_name,
@@ -167,7 +170,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildOptions(BuildContext context) {
     return Column(
       children: [
-        ProfileOption(
+        /*ProfileOption(
           icon: Icons.person_outline,
           text: 'Configurações da Conta',
           onTap: () {
@@ -176,7 +179,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               MaterialPageRoute(builder: (context) => const ProfileEditScreen()),
             );
           },
-        ),
+        ),*/
+        
         ProfileOption(
           icon: Icons.settings,
           text: 'Suporte',

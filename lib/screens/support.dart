@@ -57,7 +57,7 @@ class _SupportScreenState extends State<SupportScreen> {
                 child: Column(
                   children: [
                     const Text(
-                      'Precisa de ajuda? Envie sua dúvida abaixo:',
+                      'Precisa de ajuda? Envie sua dúvida, necessidade abaixo e resolveremos:',
                       style: TextStyle(color: Colors.white, fontSize: 16,fontFamily: "Poppins"),
                     ),
                     const SizedBox(height: 20),

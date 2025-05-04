@@ -57,7 +57,7 @@ class ActivitiesScreen extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => ActivityDetailScreen(activityTitle: activity.name),
+                                      builder: (context) => ActivityDetailScreen(activityTitle: activity.name, activityVideo: activity.video,),
                                     ),
                                   );
                                 }
