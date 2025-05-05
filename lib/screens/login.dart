@@ -151,11 +151,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         text: 'Decolar',
                         onPressed:() => _login(context),
                       ),
-                      SizedBox(height: screenHeight * 0.04),
+                      /* SizedBox(height: screenHeight * 0.04),
                       PrimaryButton(
                         text: 'subir atividade',
                         onPressed:uploadActivitiesToFirestore,
-                      ),
+                      ),*/
+                     
                       
                       
           

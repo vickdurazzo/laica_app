@@ -12,7 +12,7 @@ class RewardsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
   
-    return Scaffold(
+   return Scaffold(
         backgroundColor: const Color(0xFF1B1A3B),
         body: Stack(
           fit: StackFit.expand,
@@ -40,15 +40,16 @@ class RewardsScreen extends StatelessWidget {
                         height: 400,
                       ),
                     ),
-                    const SizedBox(height: 20),
-
-                    /// 🎁 Banner de compra
-                    ProductPromoBanner(
-                      title: 'Desbloqueie mais aventuras!',
-                      description:
-                          'Adquira agora para liberar conteúdos exclusivos e fortalecer laços com seus filhos.',
-                      buttonText: 'Comprar agora',
-                      url: 'https://www.instagram.com/laicasolutions/',
+                    // 👇 Esse espaçamento será negativo para o banner "subir"
+                    Transform.translate(
+                      offset: const Offset(0, -100),
+                      child: ProductPromoBanner(
+                        title: 'Desbloqueie mais aventuras!',
+                        description:
+                            'Adquira agora para liberar conteúdos exclusivos e fortalecer laços com seus filhos.',
+                        buttonText: 'Comprar agora',
+                        url: 'https://www.instagram.com/laicasolutions/',
+                      ),
                     ),
                   ],
                 ),
@@ -58,6 +59,7 @@ class RewardsScreen extends StatelessWidget {
         ),
         bottomNavigationBar: const BottomNavBar(currentIndex: 2),
       );
+
 
   }
 }
