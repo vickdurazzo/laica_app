@@ -50,10 +50,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }
 
       final userData = docSnapshot.data() as Map<String, dynamic>;
-      print('Dados buscados do Firebase: $userData');
+      //print('Dados buscados do Firebase: $userData');
       return UserModel.fromJson(userData);
     } catch (e) {
-      print('Erro ao buscar os dados do Firebase: $e');
+      //print('Erro ao buscar os dados do Firebase: $e');
       return null;
     }
   }

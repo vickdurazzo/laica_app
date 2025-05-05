@@ -84,24 +84,24 @@ Future<List<Planet>> loadPlanets() async {
 
           // Busca usando a hierarquia correta: planetId > islandId > activityId
           if (activityStatuses.containsKey(planet.id)) {
-            print('🌍 Encontrado planetId: ${planet.id}');
+            //print('🌍 Encontrado planetId: ${planet.id}');
             final islandMap = activityStatuses[planet.id] as Map<String, dynamic>;
 
             if (islandMap.containsKey(island.id)) {
-              print('🏝️ Encontrado islandId: ${island.id}');
+              //print('🏝️ Encontrado islandId: ${island.id}');
               final activityMap = islandMap[island.id] as Map<String, dynamic>;
 
               if (activityMap.containsKey(activity.id)) {
                 status = activityMap[activity.id];
-                print('✅ Status encontrado para activityId ${activity.id}: $status');
+                //print('✅ Status encontrado para activityId ${activity.id}: $status');
               } else {
-                print('🚫 activityId ${activity.id} não encontrado em ${island.id}');
+                //print('🚫 activityId ${activity.id} não encontrado em ${island.id}');
               }
             } else {
-              print('🚫 islandId ${island.id} não encontrado em ${planet.id}');
+              //print('🚫 islandId ${island.id} não encontrado em ${planet.id}');
             }
           } else {
-            print('🚫 planetId ${planet.id} não encontrado no activityStatuses');
+            //print('🚫 planetId ${planet.id} não encontrado no activityStatuses');
           }
 
           activity.status = status;
