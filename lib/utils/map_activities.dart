@@ -1,37 +1,90 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-Future<Map<String, dynamic>> generateActivityStatus() async {
-        final firestore = FirebaseFirestore.instance;
-        final activitiesSnapshot = await firestore.collection('activities').get();
 
-        final Map<String, dynamic> activityStatus = {};
+/*Future<Map<String, dynamic>> generateActivityStatus() async {
+  final firestore = FirebaseFirestore.instance;
+  final activitiesSnapshot = await firestore.collection('activities').get();
 
-        for (var doc in activitiesSnapshot.docs) {
-          final planetId = doc.id;
-          final data = doc.data();
+  final Map<String, dynamic> activityStatus = {};
 
-          if (data['island'] != null) {
-            final List<dynamic> islands = data['island'];
+  for (var doc in activitiesSnapshot.docs) {
+    final data = doc.data();
 
-            final Map<String, dynamic> planetMap = {};
+    // Usa o campo 'id' do planeta, que representa o planetId real (ex: 'earth', 'family')
+    final planetId = data['id']; 
 
-            for (var island in islands) {
-              final islandId = island['id'];
-              final List<dynamic> activities = island['activities'];
+    if (planetId == null) {
+      print('⚠️ Documento ${doc.id} não tem campo "id", ignorando...');
+      continue;
+    }
 
-              final Map<String, String> activityMap = {};
+    if (data['island'] != null) {
+      final List<dynamic> islands = data['island'];
 
-              for (var activity in activities) {
-                final activityId = activity['id'];
-                activityMap[activityId] = 'locked';
-              }
+      final Map<String, dynamic> planetMap = {};
 
-              planetMap[islandId] = activityMap;
-            }
+      for (var island in islands) {
+        final islandId = island['id'];
+        final List<dynamic> activities = island['activities'];
 
-            activityStatus[planetId] = planetMap;
-          }
+        final Map<String, String> activityMap = {};
+
+        for (var activity in activities) {
+          final activityId = activity['id'];
+          activityMap[activityId] = 'locked';
         }
-        print(activityStatus);
-        return activityStatus;
-        
+
+        planetMap[islandId] = activityMap;
       }
+
+      activityStatus[planetId] = planetMap;
+    }
+  }
+
+  print('🧩 activityStatus gerado: $activityStatus');
+  return activityStatus;
+}
+*/
+Future<Map<String, dynamic>> generateActivityStatus() async {
+  final firestore = FirebaseFirestore.instance;
+  final activitiesSnapshot = await firestore.collection('activities').get();
+
+  final Map<String, dynamic> activityStatus = {};
+
+  for (var doc in activitiesSnapshot.docs) {
+    final data = doc.data();
+
+    final planetId = data['id'];
+    if (planetId == null) {
+      print('⚠️ Documento ${doc.id} não tem campo "id", ignorando...');
+      continue;
+    }
+
+    if (data['island'] != null) {
+      final List<dynamic> islands = data['island'];
+      final Map<String, dynamic> planetMap = {};
+
+      for (var island in islands) {
+        final islandId = island['id'];
+        final List<dynamic> activities = island['activities'];
+
+        final Map<String, String> activityMap = {};
+
+        for (int i = 0; i < activities.length; i++) {
+          final activity = activities[i];
+          final activityId = activity['id'];
+
+          // Primeira atividade da ilha é "available", as demais são "locked"
+          activityMap[activityId] = i == 0 ? 'available' : 'locked';
+        }
+
+        planetMap[islandId] = activityMap;
+      }
+
+      activityStatus[planetId] = planetMap;
+    }
+  }
+
+  print('🧩 activityStatus gerado: $activityStatus');
+  return activityStatus;
+}
+

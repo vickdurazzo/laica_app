@@ -50,7 +50,7 @@ class ActivitiesScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final activity = island.activities[index];
                         final isEven = index % 2 == 0;
-                        final isAccessible = activity.status != "blocked";
+                        final isAccessible = activity.status != "locked";
                         //("TELA TRANSICAO PARA DETALHES ATIVIDADES");
                         //print(planetId);
                         //print(island.id);
