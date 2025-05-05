@@ -42,7 +42,7 @@ class RewardsScreen extends StatelessWidget {
                     ),
                     // 👇 Esse espaçamento será negativo para o banner "subir"
                     Transform.translate(
-                      offset: const Offset(0, -100),
+                      offset: const Offset(0, -200),
                       child: ProductPromoBanner(
                         title: 'Desbloqueie mais aventuras!',
                         description:
