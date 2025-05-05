@@ -1,18 +1,15 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../widgets/bottom_nav.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/profile_option.dart';
 import '../models/user.dart';
-import 'profile_edit.dart';
 import 'support.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 // Importa o pacote de autenticação do Firebase
 import 'package:firebase_auth/firebase_auth.dart';
 // Importa o pacote para exibir mensagens rápidas (toasts)
-import 'package:fluttertoast/fluttertoast.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

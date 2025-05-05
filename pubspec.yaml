@@ -77,20 +77,24 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - assets/images/background.png
-    - assets/images/logo.png
-    - assets/images/planets/
-    - assets/data/planets.json
-    - assets/data/user.json
-    - assets/images/planet1.png
-    - assets/images/planet2.png
-    - assets/images/naveQuebrada.png
-    - assets/images/recompensas.png
-    - assets/images/rocket_dog.png
-    - assets/images/family_photo.png
-    - assets/images/islands/
+    #- assets/images/background.png
+    #- assets/images/logo.png
+    #- assets/images/planets/
+    #- assets/data/planets.json
+    #- assets/data/user.json
+    #- assets/images/planet1.png
+    #- assets/images/planet2.png
+    #- assets/images/naveQuebrada.png
+    #- assets/images/recompensas.png
+    #- assets/images/rocket_dog.png
+    #- assets/images/family_photo.png
+    #- assets/images/islands/
     - assets/images/
+    - assets/images/planets/
+    - assets/images/islands/
     - assets/images/avatar/
+    - assets/fonts/
+    #- assets/images/avatar/
     
 
   fonts:

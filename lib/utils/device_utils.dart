@@ -1,7 +1,6 @@
 // lib/utils/device_utils.dart
 @JS()
 library;
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:js/js.dart';

@@ -15,7 +15,6 @@ Future<List<Planet>> loadPlanets() async {
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/planet.dart';
-import 'dart:convert';
 /*
 Future<List<Planet>> loadPlanets() async {
   try {

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -7,9 +6,6 @@ import 'package:laica_app/widgets/app_title.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/form_input.dart';
 import '../models/user.dart'; 
-import '../widgets/avatar_selector.dart'; 
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as path;
 
 
 

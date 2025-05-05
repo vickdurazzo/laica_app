@@ -15,7 +15,7 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenWidth = DeviceUtils.getScreenWidth(context);
     double buttonWidth = screenWidth * 0.8; // 85% da largura da tela
-    return Container(
+    return SizedBox(
       width: buttonWidth > 500 ? 500 : buttonWidth, // Max width of 500
       height: 48,
       child: ElevatedButton(

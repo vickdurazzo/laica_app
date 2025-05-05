@@ -5,7 +5,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:laica_app/widgets/primary_button.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as path;
 import 'dart:typed_data'; // necessário para Uint8List
