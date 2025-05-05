@@ -25,18 +25,16 @@ class UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      user_id: json['user_id'],
-      family_name: json['family_name'],
-      email: json['email'],
-      password_hash: json['password_hash'],
-      accepted_terms: json['accepted_terms'],
-      receive_updates: json['receive_updates'],
-      cellphone: json['cellphone'],
-      children: (json['children'] as List)
-          .map((childJson) => Child.fromJson(childJson))
-          .toList(),
-      created_at: json['created_at'],
-      last_login: json['last_login'],
+      user_id: json['user_id'] ?? '',
+      family_name: json['family_name'] ?? '',
+      email: json['email'] ?? '',
+      password_hash: json['password_hash'] ?? '',
+      accepted_terms: json['accepted_terms'] ?? false,
+      receive_updates: json['receive_updates'] ?? false,
+      cellphone: json['cellphone'] ?? 0,
+      children: (json['children'] as List?)?.map((childJson) => Child.fromJson(childJson)).toList() ?? [],
+      created_at: json['created_at'] ?? '',
+      last_login: json['last_login'] ?? '',
     );
   }
 
@@ -54,7 +52,6 @@ class UserModel {
       'last_login': last_login,
     };
   }
-
 }
 
 class Child {
@@ -74,15 +71,17 @@ class Child {
 
   factory Child.fromJson(Map<String, dynamic> json) {
     return Child(
-      child_id: json['child_id'],
-      name: json['name'],
-      birthday: json['birthday'],
-      avatar: json['avatar'],
-      progress: Progress.fromJson(json['progress']),
+      child_id: json['child_id'] ?? '',
+      name: json['name'] ?? '',
+      birthday: json['birthday'] ?? '',
+      avatar: json['avatar'] ?? '',
+      progress: json['progress'] != null
+          ? Progress.fromJson(json['progress'])
+          : Progress(missions_completed: 0, stars: 0),
     );
   }
 
-    Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'child_id': child_id,
       'name': name,
@@ -91,10 +90,6 @@ class Child {
       'progress': progress.toJson(),
     };
   }
-
-
-
-
 }
 
 class Progress {
@@ -108,17 +103,15 @@ class Progress {
 
   factory Progress.fromJson(Map<String, dynamic> json) {
     return Progress(
-      missions_completed: json['missions_completed'],
-      stars: json['stars'],
+      missions_completed: json['missions_completed'] ?? 0,
+      stars: json['stars'] ?? 0,
     );
   }
 
-    Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'missions_completed': missions_completed,
       'stars': stars,
     };
   }
-
 }
-

@@ -1,4 +1,4 @@
-import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../widgets/bottom_nav.dart';
@@ -7,6 +7,8 @@ import '../widgets/profile_option.dart';
 import '../models/user.dart';
 import 'profile_edit.dart';
 import 'support.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 // Importa o pacote de autenticação do Firebase
 import 'package:firebase_auth/firebase_auth.dart';
 // Importa o pacote para exibir mensagens rápidas (toasts)
@@ -33,16 +35,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() => _user = user);
   }
 
-  Future<UserModel> _fetchUserData() async {
-    final String response = await rootBundle.loadString('assets/data/user.json');
-    final data = json.decode(response);
-    return UserModel.fromJson(data);
+    Future<UserModel?> _fetchUserData() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        print('Nenhum usuário autenticado.');
+        return null;
+      }
+
+      final docSnapshot = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      if (!docSnapshot.exists) {
+        print('Documento não encontrado.');
+        return null;
+      }
+
+      final userData = docSnapshot.data() as Map<String, dynamic>;
+      print('Dados buscados do Firebase: $userData');
+      return UserModel.fromJson(userData);
+    } catch (e) {
+      print('Erro ao buscar os dados do Firebase: $e');
+      return null;
+    }
   }
 
   void _logout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     Navigator.pushReplacementNamed(context, '/'); // Redireciona para a tela de login
   }
+
+  String _capitalize(String text) {
+  if (text.isEmpty) return text;
+  return text[0].toUpperCase() + text.substring(1);
+}
+
 
 
   @override
@@ -80,7 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         
                         const SizedBox(height: 16),
                         Text(
-                          _user!.family_name,
+                          _capitalize(_user!.family_name),
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -94,9 +119,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ? 'Criança: ${_user!.children.first.name}'
                               : '',
                           style: const TextStyle(
-                            color: Colors.white70,
+                            color: Colors.white,
                             fontFamily: "Poppins",
                             fontSize: 16,
+                            fontWeight:FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 20),
