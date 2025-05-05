@@ -58,6 +58,9 @@ class IslandsScreen extends StatelessWidget {
                             itemCount: planet.island.length,
                             itemBuilder: (context, index) {
                               final island = planet.island[index];
+                              final planetId = planet.id;
+                              //print("TELA DO PLANETA PARA ILHA");
+                              //print(planetId);
 
                               return Center(
                                 child: Padding(
@@ -67,7 +70,7 @@ class IslandsScreen extends StatelessWidget {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => ActivitiesScreen(island: island),
+                                          builder: (context) => ActivitiesScreen(island: island, planetId: planetId,),
                                         ),
                                       );
                                     },

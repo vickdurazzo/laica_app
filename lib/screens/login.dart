@@ -3,6 +3,13 @@ import 'package:laica_app/widgets/app_subtitle.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/app_title.dart';
 import '../widgets/form_input.dart';
+// Importa o pacote de autenticação do Firebase
+import 'package:firebase_auth/firebase_auth.dart';
+// Importa o pacote para exibir mensagens rápidas (toasts)
+import 'package:fluttertoast/fluttertoast.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,10 +22,10 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void _handleLogin() {
-      final email = _emailController.text.trim();
-      final password = _passwordController.text;
-
+  void _login(BuildContext context) async {
+      //final email = _emailController.text.trim();
+      //final password = _passwordController.text;
+      /*
       if (email.isEmpty || password.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Preencha todos os campos')),
@@ -26,6 +33,20 @@ class _LoginScreenState extends State<LoginScreen> {
         return;
       }
 
+      */
+      
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+        );
+        Navigator.pushReplacementNamed(context, '/menu');
+      } catch (e) {
+        Fluttertoast.showToast(msg: 'Erro: $e');
+      }
+
+
+      /*
       // Simulação de validação
       const mockEmail = 'teste';
       const mockPassword = '123';
@@ -42,7 +63,29 @@ class _LoginScreenState extends State<LoginScreen> {
           const SnackBar(content: Text('E-mail ou senha incorretos')),
         );
       }
+      
+      */
+      
     }
+
+    
+
+
+
+    void uploadActivitiesToFirestore() async {
+        final firestore = FirebaseFirestore.instance;
+
+        final activities =[];
+ 
+
+
+        for (var activity in activities) {
+          await firestore.collection('activities').add(activity);
+          print('Atividade "${activity["title"]}" adicionada.');
+        }
+
+        print('Upload completo!');
+      }
 
 
   @override
@@ -106,8 +149,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       // Botão
                       PrimaryButton(
                         text: 'Decolar',
-                        onPressed:_handleLogin,
+                        onPressed:() => _login(context),
                       ),
+                      SizedBox(height: screenHeight * 0.04),
+                      PrimaryButton(
+                        text: 'subir atividade',
+                        onPressed:uploadActivitiesToFirestore,
+                      ),
+                      
+                      
           
                       SizedBox(height: screenHeight * 0.04),
           

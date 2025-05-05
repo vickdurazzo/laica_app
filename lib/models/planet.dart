@@ -17,13 +17,13 @@ class Planet {
 
   factory Planet.fromJson(Map<String, dynamic> json) {
     return Planet(
-      id: json['id'],
-      name: json['name'],
-      image: json['image'],
-      color: json['color'],
+      id: json['id'] ?? 'unknown_id',
+      name: json['name'] ?? 'Planeta sem nome',
+      image: json['image'] ?? '',
+      color: json['color'] ?? '#FFFFFF',
       island: (json['island'] as List)
           .map((islandJson) => Island.fromJson(islandJson))
-          .toList(),
+          .toList() ?? [],
     );
   }
 }

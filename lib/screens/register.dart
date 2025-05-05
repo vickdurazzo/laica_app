@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
+//import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -7,8 +7,17 @@ import 'package:laica_app/models/user.dart';
 import 'package:laica_app/widgets/app_title.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/form_input.dart';
-import 'package:path_provider/path_provider.dart';
+//import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
+// Importa o pacote de autenticação do Firebase
+import 'package:firebase_auth/firebase_auth.dart';
+// Importa o pacote para exibir mensagens rápidas (toasts)
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:laica_app/utils/map_activities.dart';
+
+
+
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -43,68 +52,86 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  void _handleRegister() {
-        // Validações básicas
-        if (_familyNameController.text.isEmpty ||
-            _childNameController.text.isEmpty ||
-            _childBirthdayController.text.isEmpty ||
-            _emailController.text.isEmpty ||
-            _cellphoneController.text.isEmpty ||
-            _passwordController.text.isEmpty ||
-            _confirmPasswordController.text.isEmpty) {
+  void _handleRegister() async {
+      if (_familyNameController.text.isEmpty ||
+          _childNameController.text.isEmpty ||
+          _childBirthdayController.text.isEmpty ||
+          _emailController.text.isEmpty ||
+          _cellphoneController.text.isEmpty ||
+          _passwordController.text.isEmpty ||
+          _confirmPasswordController.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Por favor, preencha todos os campos.')),
+        );
+        return;
+      }
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Por favor, preencha todos os campos.')),
-          );
-          
-        
-          return;
-        }
+      if (_passwordController.text != _confirmPasswordController.text) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('As senhas não coincidem.')),
+        );
+        return;
+      }
 
-        if (_passwordController.text != _confirmPasswordController.text) {
-           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('As senhas não coincidem.')),
-          );
-          
-          return;
-        }
+      if (!_termsAgreed) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Você precisa aceitar os termos e políticas.')),
+        );
+        return;
+      }
 
-        if (!_termsAgreed) {
-           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Você precisa aceitar os termos e políticas.')),
-          );
-        
-          return;
-        }
+      try {
+        // 1. Cadastra o usuário no Firebase Auth
+        final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+        );
 
-        // Criar objeto User
+        final uid = credential.user!.uid;
         final uuid = const Uuid();
         final now = DateTime.now().toIso8601String();
 
-        final user = User(
-          user_id: uuid.v4(),
-          family_name: _familyNameController.text,
-          email: _emailController.text,
-          password_hash: _passwordController.text, // Em um app real, você deveria aplicar um hash
-          accepted_terms: _termsAgreed,
-          receive_updates: _updatesSubscribed,
-          cellphone: int.tryParse(_cellphoneController.text) ?? 0,
-          children: [
-            Child(
-              child_id: uuid.v4(),
-              name: _childNameController.text,
-              birthday: _childBirthdayController.text,
-              avatar: "default.png", // Pode ajustar conforme necessidade
-              progress: Progress(missions_completed: 0, stars: 0),
-            )
-          ],
-          created_at: now,
-          last_login: now,
-        );
+        final activityStatus = await generateActivityStatus();
 
-        final jsonString = jsonEncode(user.toJson());
-        print('Usuário cadastrado com sucesso:\n$jsonString');
+        // 2. Monta o objeto com os dados completos
+        final userData = {
+          "user_id": uid, // usa o uid do Firebase Auth
+          "family_name": _familyNameController.text,
+          "email": _emailController.text,
+          "accepted_terms": _termsAgreed,
+          "receive_updates": _updatesSubscribed,
+          "cellphone": int.tryParse(_cellphoneController.text) ?? 0,
+          "children": [
+            {
+              "child_id": uuid.v4(),
+              "name": _childNameController.text,
+              "birthday": _childBirthdayController.text,
+              "avatar": "",
+              "activity_status": activityStatus,
+              "progress": {"missions_completed": 0, "stars": 0}
+            }
+          ],
+          "created_at": now,
+          "last_login": now,
+        };
+
+        print(userData);
+
+        try{
+          // 3. Salva no Firestore (coleção "users")
+          await FirebaseFirestore.instance.collection('users').doc(uid).set(userData);
+        }catch(e){
+          print(e);
+        }
+
+        Fluttertoast.showToast(msg: 'Cadastro realizado com sucesso');
+        Navigator.pop(context);
+
+      } catch (e) {
+        
+        Fluttertoast.showToast(msg: 'Erro ao cadastrar: $e');
       }
+    }
 
 
   void _showBirthdayPicker() {

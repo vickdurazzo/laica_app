@@ -13,10 +13,10 @@ class Activity {
 
   factory Activity.fromJson(Map<String, dynamic> json) {
     return Activity(
-      id: json['id'],
-      name: json['name'],
-      video: json['video'],
-      status: json['status'],
+      id: json['id'] ?? '',
+      name: json['name'] ?? '',
+      video: json['video'] ?? '',
+      status: 'available',
     );
   }
 }

@@ -4,8 +4,9 @@ import 'activity_detail.dart';
 
 class ActivitiesScreen extends StatelessWidget {
   final Island island;
+  final String planetId;
 
-  const ActivitiesScreen({super.key, required this.island});
+  const ActivitiesScreen({super.key, required this.island, required this.planetId});
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +51,10 @@ class ActivitiesScreen extends StatelessWidget {
                         final activity = island.activities[index];
                         final isEven = index % 2 == 0;
                         final isAccessible = activity.status != "blocked";
+                        //("TELA TRANSICAO PARA DETALHES ATIVIDADES");
+                        //print(planetId);
+                        //print(island.id);
+                        //print(activity.id);
 
                         final activityWidget = GestureDetector(
                           onTap: isAccessible
@@ -57,7 +62,11 @@ class ActivitiesScreen extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => ActivityDetailScreen(activityTitle: activity.name, activityVideo: activity.video,),
+                                      builder: (context) => ActivityDetailScreen(activityTitle: activity.name, 
+                                      activityVideo: activity.video,
+                                      planetId: planetId,
+                                      islandId: island.id,
+                                      activityId: activity.id,),
                                     ),
                                   );
                                 }

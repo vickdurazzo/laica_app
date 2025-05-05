@@ -7,6 +7,10 @@ import '../widgets/profile_option.dart';
 import '../models/user.dart';
 import 'profile_edit.dart';
 import 'support.dart';
+// Importa o pacote de autenticação do Firebase
+import 'package:firebase_auth/firebase_auth.dart';
+// Importa o pacote para exibir mensagens rápidas (toasts)
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -16,7 +20,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  User? _user;
+  UserModel? _user;
 
   @override
   void initState() {
@@ -29,11 +33,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() => _user = user);
   }
 
-  Future<User> _fetchUserData() async {
+  Future<UserModel> _fetchUserData() async {
     final String response = await rootBundle.loadString('assets/data/user.json');
     final data = json.decode(response);
-    return User.fromJson(data);
+    return UserModel.fromJson(data);
   }
+
+  void _logout(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushReplacementNamed(context, '/'); // Redireciona para a tela de login
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -194,9 +204,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         const SizedBox(height: 20),
         PrimaryButton(
           text: 'Sair',
-          onPressed: () {
-            Navigator.pushNamed(context, '/');
-          },
+          onPressed:  () => _logout(context),
         ),
       ],
     );

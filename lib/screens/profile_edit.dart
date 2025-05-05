@@ -21,7 +21,7 @@ class ProfileEditScreen extends StatefulWidget {
 }
 
 class _ProfileEditScreenState extends State<ProfileEditScreen> {
-  User? _user;
+  UserModel? _user;
 
   final TextEditingController _familyNameController = TextEditingController();
   final TextEditingController _childNameController = TextEditingController();
@@ -44,7 +44,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       final String data = await rootBundle.loadString('assets/data/user.json');
       final Map<String, dynamic> jsonResult = json.decode(data);
       setState(() {
-        _user = User.fromJson(jsonResult);
+        _user = UserModel.fromJson(jsonResult);
         _updateControllersWithUserData();
       });
     } catch (e) {
@@ -74,7 +74,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   Future<void> _saveChanges() async {
       if (_user == null) return;
 
-      _user = User(
+      _user = UserModel(
         user_id: _user!.user_id,
         family_name: _familyNameController.text,
         email: _emailController.text,

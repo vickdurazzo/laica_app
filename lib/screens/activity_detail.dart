@@ -1,18 +1,30 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:laica_app/widgets/primary_button.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart' as path;
+import 'dart:typed_data'; // necessário para Uint8List
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class ActivityDetailScreen extends StatefulWidget {
   final String activityTitle;
   final String activityVideo;
+  final String planetId;
+  final String islandId;
+  final String activityId;
 
   const ActivityDetailScreen({
     super.key,
     required this.activityTitle,
     required this.activityVideo,
+    required this.planetId,
+    required this.islandId,
+    required this.activityId,
   });
 
   @override
@@ -53,37 +65,65 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
     super.dispose();
   }
 
-  Future<void> _pickMedia() async {
-    final picker = ImagePicker();
 
-    final XFile? pickedFile = await showModalBottomSheet<XFile?>(
-      context: context,
-      builder: (_) {
-        return SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: const Icon(Icons.image),
-                title: const Text('Selecionar Imagem'),
-                onTap: () async {
-                  final file = await picker.pickImage(source: ImageSource.gallery);
-                  Navigator.pop(context, file);
-                },
-              )
-            ],
-          ),
+Future<void> _pickMedia() async {
+  final picker = ImagePicker();
+
+  final XFile? pickedFile = await showModalBottomSheet<XFile?>(
+    context: context,
+    builder: (_) {
+      return SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.image),
+              title: const Text('Selecionar Imagem'),
+              onTap: () async {
+                final file = await picker.pickImage(source: ImageSource.gallery);
+                Navigator.pop(context, file);
+              },
+            ),
+          ],
+        ),
+      );
+    },
+  );
+
+  if (pickedFile != null) {
+    try {
+      // IDs fictícios (substitua pelos reais)
+      final String planetId = widget.planetId;
+      final String islandId = widget.islandId;
+      final String activityId = widget.activityId;
+      final String userId = FirebaseAuth.instance.currentUser?.uid ?? 'anon';
+
+      // Obtem extensão (ex: .jpg)
+      final fileExtension = path.extension(pickedFile.name);
+      final fileName = '$planetId+$islandId+$activityId+$userId$fileExtension';
+      final filePath = 'atividadesFeitas/$fileName';
+
+      final ref = FirebaseStorage.instance.ref().child(filePath);
+
+      if (kIsWeb) {
+        // Flutter Web: usa Uint8List
+        Uint8List data = await pickedFile.readAsBytes();
+
+        await ref.putData(
+          data,
+          SettableMetadata(contentType: _getContentType(fileExtension)),
         );
-      },
-    );
+      } else {
+        // Mobile: usa File
+        final file = File(pickedFile.path);
+        await ref.putFile(
+          file,
+          SettableMetadata(contentType: _getContentType(fileExtension)),
+        );
+      }
 
-    if (pickedFile != null) {
-      setState(() {
-        _selectedFile = File(pickedFile.path);
-      });
-
-      await Future.delayed(const Duration(seconds: 2));
-
+      // Diálogo de sucesso
+      await Future.delayed(const Duration(seconds: 1));
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
@@ -100,8 +140,29 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
           ],
         ),
       );
+    } catch (e) {
+      debugPrint('Erro ao enviar imagem: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Erro ao enviar imagem. Tente novamente.')),
+      );
     }
   }
+}
+
+// Função auxiliar para definir contentType correto
+String _getContentType(String extension) {
+  switch (extension.toLowerCase()) {
+    case '.png':
+      return 'image/png';
+    case '.jpg':
+    case '.jpeg':
+      return 'image/jpeg';
+    case '.gif':
+      return 'image/gif';
+    default:
+      return 'application/octet-stream'; // padrão
+  }
+}
 
   @override
   Widget build(BuildContext context) {

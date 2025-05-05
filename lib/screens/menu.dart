@@ -71,11 +71,14 @@ class MenuScreen extends StatelessWidget {
                                 );
                               },
                               child: CardWidget(
+                                
+
                                 child: ImageWidget(
                                   image: planet.image,
                                   width: double.infinity,
                                   height: double.infinity,
                                 ),
+                               
                               ),
                             );
                           },
