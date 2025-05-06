@@ -6,6 +6,7 @@ import 'screens/profile.dart';
 import 'screens/menu.dart';
 import 'screens/explore.dart';
 import 'screens/rewards.dart';
+import 'screens/password_recover.dart';
 
 final Map<String, WidgetBuilder> appRoutes = {
   '/': (context) => const WelcomeScreen(),
@@ -15,4 +16,6 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/menu': (context) => const MenuScreen(),
   '/explore': (context) => const ExploreScreen(),
   '/rewards': (context) => const RewardsScreen(),
+  '/password_recover': (context) => const PasswordRecoverScreen(),
+
 };

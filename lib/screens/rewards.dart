@@ -44,10 +44,10 @@ class RewardsScreen extends StatelessWidget {
                     Transform.translate(
                       offset: const Offset(0, -200),
                       child: ProductPromoBanner(
-                        title: 'Desbloqueie mais aventuras!',
+                        title: 'Troque seus pontos por recompensas!',
                         description:
-                            'Adquira agora para liberar conteúdos exclusivos e fortalecer laços com seus filhos.',
-                        buttonText: 'Comprar agora',
+                            'Possibilidade de troca de pontos por prêmios, oportunidades especiais para nossos astronautas exploradores.',
+                        buttonText: 'Explorar',
                         url: 'https://www.instagram.com/laicasolutions/',
                       ),
                     ),
