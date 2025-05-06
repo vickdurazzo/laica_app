@@ -81,7 +81,7 @@ class WelcomeScreen extends StatelessWidget {
                   ],
                 ),
 
-                const SizedBox(height: 40),
+                const SizedBox(height: 60),
                 AppSubtitle(text: 'Prontos para embarcar no foguete ?'),
                 const SizedBox(height: 30),
 

@@ -15,12 +15,18 @@ class ProductPromoBanner extends StatelessWidget {
     required this.url,
   });
 
-  void _launchURL() async {
-    final Uri uri = Uri.parse(url);
-    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-      throw Exception('Não foi possível abrir o link: $url');
-    }
+
+
+  Future<void> _launchURL() async {
+  final Uri uri = Uri.parse(url);
+
+  if (!await launchUrl(
+    uri,
+    mode: LaunchMode.platformDefault, // ou LaunchMode.externalApplication
+  )) {
+    throw 'Não foi possível abrir o link $uri';
   }
+}
 
   @override
   Widget build(BuildContext context) {
