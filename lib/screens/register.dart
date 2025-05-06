@@ -255,7 +255,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       text: 'Eu concordo com os ',
                                       style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         fontFamily: 'Poppins',
                                         fontWeight: FontWeight.w500,
                                         height: 22 / 14,
@@ -265,7 +265,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       text: 'termos e políticas de privacidade',
                                       style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         fontFamily: 'Poppins',
                                         fontWeight: FontWeight.bold,
                                         height: 22 / 14,
