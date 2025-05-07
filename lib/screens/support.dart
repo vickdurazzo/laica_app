@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../widgets/primary_button.dart';
 
 class SupportScreen extends StatefulWidget {
@@ -25,6 +26,15 @@ class _SupportScreenState extends State<SupportScreen> {
         const SnackBar(content: Text('Mensagem enviada! Responderemos em breve.')),
       );
       _messageController.clear();
+    }
+  }
+  void _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri,mode: LaunchMode.platformDefault, // ou LaunchMode.externalApplication
+      );
+    } else {
+      throw 'Não foi possível abrir o link: $url';
     }
   }
 
@@ -57,34 +67,38 @@ class _SupportScreenState extends State<SupportScreen> {
                 child: Column(
                   children: [
                     const Text(
-                      'Precisa de ajuda? Envie sua dúvida, necessidade abaixo e resolveremos:',
+                      'Precisa de ajuda? Entre em contato conosco:',
                       style: TextStyle(color: Colors.white, fontSize: 16,fontFamily: "Poppins"),
                     ),
                     const SizedBox(height: 20),
-                    TextFormField(
-                      controller: _messageController,
-                      maxLines: 5,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
-                        hintText: 'Digite sua mensagem aqui...',
-                        hintStyle: TextStyle(color: Colors.white54),
-                        filled: true,
-                        fillColor: Color(0xFF2E2B5F),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(12)),
-                        ),
-                      ),
-                      validator: (value) => value!.isEmpty ? 'Mensagem não pode estar vazia' : null,
+                    ElevatedButton.icon(
+                    onPressed: () => _launchURL('https://wa.me/message/CW7K3AWF66LJL1'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     ),
-                    const SizedBox(height: 20),
-                    PrimaryButton(
-                    text: 'Enviar',
-                    onPressed: () {
-                     
-                      Navigator.pushNamed(context, '/profile');
-                    
-                    },
+                    icon: const Icon(Icons.chat, color: Colors.white),
+                    label: const Text(
+                      'Fale conosco no WhatsApp',
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
                   ),
+                   const SizedBox(height: 20),
+                  ElevatedButton.icon(
+                    onPressed: () => _launchURL('https://www.instagram.com/laicasolutions/'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.purple,
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    ),
+                    icon: const Icon(Icons.camera_alt, color: Colors.white),
+                    label: const Text(
+                      'Entre em contato no Instagram',
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ),
+                   
                   ],
                 ),
               ),
