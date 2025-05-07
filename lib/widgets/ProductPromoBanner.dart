@@ -5,20 +5,20 @@ class ProductPromoBanner extends StatelessWidget {
   final String title;
   final String description;
   final String buttonText;
-  final String url;
+ 
 
   const ProductPromoBanner({
     super.key,
     required this.title,
     required this.description,
     required this.buttonText,
-    required this.url,
+   
   });
 
 
 
   Future<void> _launchURL() async {
-  final Uri uri = Uri.parse(url);
+  final Uri uri = Uri.parse("https://www.instagram.com/laicasolutions/");
 
   if (!await launchUrl(
     uri,

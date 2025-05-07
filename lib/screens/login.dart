@@ -32,6 +32,20 @@ class _LoginScreenState extends State<LoginScreen> {
         password: _passwordController.text,
       );
 
+      if (!authResult.user!.emailVerified) {
+        final user = FirebaseAuth.instance.currentUser;
+        await user?.sendEmailVerification();
+        await FirebaseAuth.instance.signOut();
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Verifique seu e-mail antes de continuar.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+          return;
+        }
+
       final uid = authResult.user?.uid;
       if (uid == null) throw Exception('Erro ao obter UID do usuário.');
 
@@ -51,9 +65,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // Navegar para o menu
       Navigator.pushReplacementNamed(context, '/menu');
-    } catch (e) {
-      Fluttertoast.showToast(msg: 'Erro ao fazer login: $e');
-    }
+    } on FirebaseAuthException catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.message ?? 'Erro de autenticação.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
   }
 
 

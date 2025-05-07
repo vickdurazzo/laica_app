@@ -22,4 +22,14 @@ class Activity {
       ordem: json['ordem'] ?? 0,
     );
   }
+
+  Activity copyWith({String? status}) {
+  return Activity(
+    id: id,
+    name: name,
+    video: video,
+    status: status ?? this.status,
+  );
+}
+
 }

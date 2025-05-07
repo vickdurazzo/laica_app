@@ -26,25 +26,25 @@ Future<List<Planet>> loadPlanets() async {
     // 2. Busca os dados do usuário
     final userSnapshot = await FirebaseFirestore.instance.collection('users').doc(userId).get();
     final userData = userSnapshot.data();
-    print('🧾 userData:\n${const JsonEncoder.withIndent('  ').convert(userData)}');
+   //print('🧾 userData:\n${const JsonEncoder.withIndent('  ').convert(userData)}');
 
     // Debug: Print o raw JSON do Firestore
     for (var doc in snapshot.docs) {
       final prettyJson = const JsonEncoder.withIndent('  ').convert(doc.data());
-      print('🔥 Documento ${doc.id}:\n$prettyJson');
-      print('----------------------------------------------');
+     //print('🔥 Documento ${doc.id}:\n$prettyJson');
+     //print('----------------------------------------------');
     }
 
     final planets = snapshot.docs.map((doc) => Planet.fromJson(doc.data())).toList();
 
     // Debug: Print os objetos Planet já convertidos
     for (var planet in planets) {
-      print('🌍 Planet carregado: ${planet.name}');
+     //print('🌍 Planet carregado: ${planet.name}');
     }
 
     return planets;
   } catch (e) {
-    print('❌ Erro ao carregar planetas do Firestore: $e');
+   //print('❌ Erro ao carregar planetas do Firestore: $e');
     rethrow;
   }
 }
@@ -83,11 +83,11 @@ Future<List<Planet>> loadPlanets() async {
 
           // Busca usando a hierarquia correta: planetId > islandId > activityId
           if (activityStatuses.containsKey(planet.id)) {
-            print('🌍 Encontrado planetId: ${planet.id}');
+           //print('🌍 Encontrado planetId: ${planet.id}');
             final islandMap = activityStatuses[planet.id] as Map<String, dynamic>;
 
             if (islandMap.containsKey(island.id)) {
-              print('🏝️ Encontrado islandId: ${island.id}');
+             //print('🏝️ Encontrado islandId: ${island.id}');
               final activityMap = islandMap[island.id] as Map<String, dynamic>;
 
              if (activityMap.containsKey(activity.id)) {
@@ -95,16 +95,16 @@ Future<List<Planet>> loadPlanets() async {
                 if (activityData is Map<String, dynamic>) {
                   status = activityData['status'] ?? 'locked';
                   activity.ordem = activityData['ordem'] ?? 0;
-                  print('✅ Status para ${activity.id}: $status | ordem: ${activity.ordem}');
+                 //print('✅ Status para ${activity.id}: $status | ordem: ${activity.ordem}');
                 } else {
-                  print('⚠️ Dados da atividade ${activity.id} não são um Map válido');
+                 //print('⚠️ Dados da atividade ${activity.id} não são um Map válido');
                 }
               }
             } else {
-              print('🚫 islandId ${island.id} não encontrado em ${planet.id}');
+             //print('🚫 islandId ${island.id} não encontrado em ${planet.id}');
             }
           } else {
-            print('🚫 planetId ${planet.id} não encontrado no activityStatuses');
+           //print('🚫 planetId ${planet.id} não encontrado no activityStatuses');
           }
 
           activity.status = status;
@@ -117,7 +117,7 @@ Future<List<Planet>> loadPlanets() async {
 
     return planets;
   } catch (e) {
-    print('❌ Erro ao carregar planetas do Firestore: $e');
+   //print('❌ Erro ao carregar planetas do Firestore: $e');
     rethrow;
   }
 }

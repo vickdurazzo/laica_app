@@ -13,7 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
     final planetId = data['id']; 
 
     if (planetId == null) {
-      print('⚠️ Documento ${doc.id} não tem campo "id", ignorando...');
+     //print('⚠️ Documento ${doc.id} não tem campo "id", ignorando...');
       continue;
     }
 
@@ -40,7 +40,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
     }
   }
 
-  print('🧩 activityStatus gerado: $activityStatus');
+ //print('🧩 activityStatus gerado: $activityStatus');
   return activityStatus;
 }
 */
@@ -55,7 +55,7 @@ Future<Map<String, dynamic>> generateActivityStatus() async {
 
     final planetId = data['id'];
     if (planetId == null) {
-      print('⚠️ Documento ${doc.id} não tem campo "id", ignorando...');
+     //print('⚠️ Documento ${doc.id} não tem campo "id", ignorando...');
       continue;
     }
 
@@ -87,6 +87,6 @@ Future<Map<String, dynamic>> generateActivityStatus() async {
     }
   }
 
-  print('🧩 activityStatus gerado: $activityStatus');
+ //print('🧩 activityStatus gerado: $activityStatus');
   return activityStatus;
 }

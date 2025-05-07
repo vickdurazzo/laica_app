@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:laica_app/utils/userProvider.dart';
 import 'package:laica_app/widgets/app_title.dart';
+import 'package:provider/provider.dart';
 import '../models/planet.dart';
 import 'activities.dart'; // ajuste o caminho se necessário
 
 
 class IslandsScreen extends StatelessWidget {
   final Planet planet;
+
+  
+
 
   const IslandsScreen({super.key, required this.planet});
 
@@ -59,6 +64,8 @@ class IslandsScreen extends StatelessWidget {
                             itemBuilder: (context, index) {
                               final island = planet.island[index];
                               final planetId = planet.id;
+                              final userProvider = Provider.of<UserProvider>(context, listen: false);
+                              final childId = userProvider.user?.children.first.child_id ?? '';
                               //print("TELA DO PLANETA PARA ILHA");
                               //print(planetId);
 
@@ -70,7 +77,7 @@ class IslandsScreen extends StatelessWidget {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => ActivitiesScreen(island: island, planetId: planetId,),
+                                          builder: (context) => ActivitiesScreen(island: island, planetId: planetId,childId: childId),
                                         ),
                                       );
                                     },

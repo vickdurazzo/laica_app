@@ -71,6 +71,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
 
+    if (_passwordController.text.length < 6) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Senha tem que ter pelo menos 6 caracteres.')));
+      return;
+    }
+
     if (!_termsAgreed) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -116,7 +123,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         "last_login": now,
       };
 
-      print(userData);
+     //print(userData);
 
       try {
         // 3. Salva no Firestore (coleção "users")
@@ -125,11 +132,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
             .doc(uid)
             .set(userData);
       } catch (e) {
-        print(e);
+       print(e);
       }
 
-      Fluttertoast.showToast(msg: 'Cadastro realizado com sucesso');
-      Navigator.pop(context);
+      if (!credential.user!.emailVerified) {
+          await credential.user!.sendEmailVerification();
+      }
+
+      await Future.delayed(const Duration(milliseconds: 500));
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: const Text("Cadastro realizado com sucesso!"),
+          content: Text("Enviamos um e-mail para você para verificar o seu cadastro"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Fecha o AlertDialog
+                Navigator.pop(context); // Volta uma tela
+              },
+              child: const Text("OK"),
+            ),
+          ],
+        ),
+      );
+      
     } catch (e) {
       Fluttertoast.showToast(msg: 'Erro ao cadastrar: $e');
     }
@@ -238,7 +265,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                print("tap");
+                               //print("tap");
                                 final Uri uri = Uri.parse(
                                   "https://drive.google.com/file/d/1UfVwHeDIcve32QSZH_d3EivgU636EWT4/view",
                                 );
