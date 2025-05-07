@@ -87,6 +87,7 @@ class Child {
   final String birthday;
   final String avatar;
   final Progress progress;
+  final Map<String, dynamic> activityStatus;
 
   Child({
     required this.child_id,
@@ -94,6 +95,7 @@ class Child {
     required this.birthday,
     required this.avatar,
     required this.progress,
+    required this.activityStatus,
   });
 
   factory Child.fromJson(Map<String, dynamic> json) {
@@ -105,6 +107,9 @@ class Child {
       progress: json['progress'] != null
           ? Progress.fromJson(json['progress'])
           : Progress(missions_completed: 0, stars: 0),
+      activityStatus: json['activity_status'] != null
+          ? Map<String, dynamic>.from(json['activity_status'])
+          : {},
     );
   }
 
@@ -115,6 +120,7 @@ class Child {
       'birthday': birthday,
       'avatar': avatar,
       'progress': progress.toJson(),
+      'activity_status': activityStatus,
     };
   }
 
@@ -123,17 +129,19 @@ class Child {
     String? birthday,
     String? avatar,
     Progress? progress,
+    Map<String, dynamic>? activityStatus,
   }) {
     return Child(
-      child_id: child_id, // geralmente não muda
+      child_id: child_id,
       name: name ?? this.name,
       birthday: birthday ?? this.birthday,
       avatar: avatar ?? this.avatar,
       progress: progress ?? this.progress,
+      activityStatus: activityStatus ?? this.activityStatus,
     );
   }
-
 }
+
 
 class Progress {
   final int missions_completed;

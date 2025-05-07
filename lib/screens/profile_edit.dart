@@ -70,28 +70,32 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   Future<void> _saveChanges() async {
       if (_user == null) return;
 
-      _user = UserModel(
-        user_id: _user!.user_id,
-        family_name: _familyNameController.text,
-        email: _emailController.text,
-        password_hash: _user!.password_hash,
-        accepted_terms: _user!.accepted_terms,
-        receive_updates: _updatesSubscribed,
-        cellphone: int.tryParse(_cellphoneController.text) ?? 0,
-        children: [
-          Child(
-            child_id: _user!.children.isNotEmpty ? _user!.children[0].child_id : '',
-            name: _childNameController.text,
-            birthday: _childBirthdayController.text,
-            avatar: _selectedAvatar,
-            progress: _user!.children.isNotEmpty
-                ? _user!.children[0].progress
-                : Progress(missions_completed: 0, stars: 0),
-          ),
-        ],
-        created_at: _user!.created_at,
-        last_login: _user!.last_login,
-      );
+     _user = UserModel(
+  user_id: _user!.user_id,
+  family_name: _familyNameController.text,
+  email: _emailController.text,
+  password_hash: _user!.password_hash,
+  accepted_terms: _user!.accepted_terms,
+  receive_updates: _updatesSubscribed,
+  cellphone: int.tryParse(_cellphoneController.text) ?? 0,
+  children: [
+    Child(
+      child_id: _user!.children.isNotEmpty ? _user!.children[0].child_id : '',
+      name: _childNameController.text,
+      birthday: _childBirthdayController.text,
+      avatar: _selectedAvatar,
+      progress: _user!.children.isNotEmpty
+          ? _user!.children[0].progress
+          : Progress(missions_completed: 0, stars: 0),
+      activityStatus: _user!.children.isNotEmpty
+          ? _user!.children[0].activityStatus
+          : {}, // Inicializa com um mapa vazio ou com valor herdado
+    ),
+  ],
+  created_at: _user!.created_at,
+  last_login: _user!.last_login,
+);
+
 
       // Exibe os dados atualizados como JSON no terminal
       final String updatedJson = jsonEncode(_user!.toJson());

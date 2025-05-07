@@ -67,14 +67,17 @@ Future<Map<String, dynamic>> generateActivityStatus() async {
         final islandId = island['id'];
         final List<dynamic> activities = island['activities'];
 
-        final Map<String, String> activityMap = {};
+        final Map<String, dynamic> activityMap = {};
 
         for (int i = 0; i < activities.length; i++) {
           final activity = activities[i];
           final activityId = activity['id'];
+          final activityOrder = activity['ordem'];
 
-          // Primeira atividade da ilha é "available", as demais são "locked"
-          activityMap[activityId] = i == 0 ? 'available' : 'locked';
+          activityMap[activityId] = {
+            'status': i == 0 ? 'available' : 'locked',
+            'ordem': activityOrder ?? i + 1, // usa campo 'ordem' ou posição
+          };
         }
 
         planetMap[islandId] = activityMap;
@@ -87,4 +90,3 @@ Future<Map<String, dynamic>> generateActivityStatus() async {
   print('🧩 activityStatus gerado: $activityStatus');
   return activityStatus;
 }
-

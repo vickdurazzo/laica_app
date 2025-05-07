@@ -1,191 +1,228 @@
-[
-  {
-    "id": "family",
-    "name": "Planeta da Família",
-    "image": "assets/images/planets/familyPlanet.png",
-    "color": "#F29DC1",
-    "island": [
-      {
-        "id": "island_1",
-        "name": "Ilha da Cozinha",
-        "image": "assets/images/islands/ilhaCozinha.png",
-        "activities": [
-          {
-            "id": "activity_1",
-            "name": "Nada de espiar",
-            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746393382/planeta_sentimento_ilha_cozinha_olhos_vendados_rzpdtd.mp4",
-            "status": "available"
-          },
-          {
-            "id": "activity_2",
-            "name": "Receita da família",
-            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746393522/planeta_sentimento_ilha_cozinha_receita_vp8tyw.mp4",
-            "status": "blocked"
-          }
-        ]
-      },
-      {
-        "id": "island_2",
-        "name": "Ilha da União",
-        "image": "assets/images/islands/ilhaUniao.png",
-        "activities": [
-          {
-            "id": "activity_3",
-            "name": "Minha herança",
-            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746394232/planeta_sentimento_ilha_uniao_desenho_fvs0tk.mp4",
-            "status": "available"
-          },
-          {
-            "id": "activity_3",
-            "name": "Pizza é União",
-            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746393901/planeta_sentimento_ilha_reflexoes_pizza_kncvc0.mp4",
-            "status": "blocked"
-          },
-          {
-            "id": "activity_4",
-            "name": "Conhecimento de Ansião",
-            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746394019/planeta_sentimento_ilha_uniao_ansi%C3%A3o_opuyk7.mp4",
-            "status": "blocked"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "earth",
-    "name": "Planeta da Terra",
-    "image": "assets/images/planets/earthPlanet.png",
-    "color": "#7CD2A8",
-    "island": [
-      {
-        "id": "island_3",
-        "name": "Ilha da Sustentabilidade",
-        "image": "assets/images/islands/ilhaSustentabilidade.png",
-        "activities": [
-          {
-            "id": "activity_5",
-            "name": "Um presente para o mundo",
-            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746394654/planeta_terra_ilha_sustentabilidade_planta_1_pvohih.mp4",
-            "status": "available"
-          },
-          {
-            "id": "activity_6",
-            "name": "Nada se destroi, tudo se transforma",
-            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746394785/planeta_terra_ilha_sustentabilidade_reciclagem_k7l9gb.mp4",
-            "status": "blocked"
-          }
-        ]
-      },
-      {
-        "id": "island_4",
-        "name": "Ilha da Solidariedade",
-        "image": "assets/images/islands/ilhaSolidariedade.png",
-        "activities": [
-          {
-            "id": "activity_7",
-            "name": "Sorriso no rosto",
-            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746394383/planeta_terra_ilha_solidariedade_5_feli_exuv6s.mp4",
-            "status": "available"
-          },
-          {
-            "id": "activity_8",
-            "name": "Heroi do dia",
-            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746394512/planeta_terra_ilha_solidariedade_doa%C3%A7%C3%A3o_ze4qxc.mp4",
-            "status": "blocked"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "fun",
-    "name": "Planeta da Diversão",
-    "image": "assets/images/planets/funPlanet.png",
-    "color": "#FFE483",
-    "island": [
-      {
-        "id": "island_5",
-        "name": "Ilha dos Experimentos",
-        "image": "assets/images/islands/ilhaExperimentos.png",
-        "activities": [
-          {
-            "id": "activity_9",
-            "name": "Sombras",
-            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746392418/planeta_diversao_ilha_diversao_sombras_nu3nrx.mp4",
-            "status": "available"
-          },
-          {
-            "id": "activity_10",
-            "name": "Oleo",
-            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746392705/planeta_diversao_ilha_experiencia_oleo_l62edx.mp4",
-            "status": "blocked"
-          },
-          {
-            "id": "activity_10",
-            "name": "Ovo",
-            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746393032/planeta_diversao_ilha_experiencia_ovo_k6jofy.mp4",
-            "status": "blocked"
-          }
-         
-
-        ]
-      },
-      {
-        "id": "island_6",
-        "name": "Ilha dos Brinquedos",
-        "image": "assets/images/islands/ilhaBrinquedos.png",
-        "activities": [
-          {
-            "id": "activity_11",
-            "name": "Foguete",
-            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746390250/ia5ygjdyomz2loocgxlg.mp4",
-            "status": "available"
-          },
-          {
-            "id": "activity_10",
-            "name": "Som na caixa",
-            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746393155/planeta_diversao_ilha_experiencia_som_ocjxxw.mp4",
-            "status": "blocked"
-          }
+[{
+  "id": "family",
+  "name": "Planeta da Família",
+  "image": "assets/images/planets/familyPlanet.png",
+  "color": "#F29DC1",
+  "island": [
+    {
+      "id": "island_1",
+      "name": "Ilha da Cozinha",
+      "image": "assets/images/islands/ilhaCozinha.png",
+      "activities": [
+        {
+          "id": "activity_1",
+          "ordem":1,
+          "name": "Nada de espiar",
+          "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746393382/planeta_sentimento_ilha_cozinha_olhos_vendados_rzpdtd.mp4"
           
-        ]
-      }
-    ]
-  },
-  {
-    "id": "feelings",
-    "name": "Planeta dos Sentimentos",
-    "image": "assets/images/planets/emotionsPlanet.png",
-    "color": "#87A6FF",
-    "island": [
-      {
-        "id": "island_7",
-        "name": "Ilha das Reflexões",
-        "image": "assets/images/islands/ilhaReflexoes.png",
-        "activities": [
-          {
-            "id": "activity_13",
-            "name": "Espelho,espelho meu",
-            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746393711/planeta_sentimento_ilha_reflexoes_espelho_beyfcz.mp4",
-            "status": "available"
-          }
+        },
+        {
+          "id": "activity_2",
+          "ordem":2,
+          "name": "Receita da família",
+          "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746393522/planeta_sentimento_ilha_cozinha_receita_vp8tyw.mp4"
+          
+        }
+      ]
+    },
+    {
+      "id": "island_2",
+      "name": "Ilha da União",
+      "image": "assets/images/islands/ilhaUniao.png",
+      "activities": [
+        {
+          "id": "activity_1",
+          "ordem":1,
+          "name": "Minha herança",
+          "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746394232/planeta_sentimento_ilha_uniao_desenho_fvs0tk.mp4"
          
-        ]
-      },
-      {
-        "id": "island_8",
-        "name": "Ilha da Emoções",
-        "image": "assets/images/islands/ilhaEmocoes.png",
-        "activities": [
-          {
-            "id": "activity_15",
-            "name": "Alguém especial",
-            "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746393616/planeta_sentimento_ilha_emo%C3%A7%C3%B5es_carta_bvj6bx.mp4",
-            "status": "available"
-          }
+        },
+        {
+          "id": "activity_2",
+          "ordem":2,
+          "name": "Conhecimento de Ansião",
+          "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746394019/planeta_sentimento_ilha_uniao_ansi%C3%A3o_opuyk7.mp4"
+          
+        }
+      ]
+    }
+  ]
+},
+{
+  "id": "earth",
+  "name": "Planeta da Terra",
+  "image": "assets/images/planets/earthPlanet.png",
+  "color": "#7CD2A8",
+  "island": [
+    {
+      "id": "island_1",
+      "name": "Ilha da Sustentabilidade",
+      "image": "assets/images/islands/ilhaSustentabilidade.png",
+      "activities": [
+        {
+          "id": "activity_1",
+          "ordem":1,
+          "name": "Um presente para o mundo",
+          "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746394654/planeta_terra_ilha_sustentabilidade_planta_1_pvohih.mp4"
          
-        ]
-      }
-    ]
-  }
+        },
+        {
+          "id": "activity_2",
+          "ordem":2,
+          "name": "Nada se destroi, tudo se transforma",
+          "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746394785/planeta_terra_ilha_sustentabilidade_reciclagem_k7l9gb.mp4"
+         
+        }
+      ]
+    },
+    {
+      "id": "island_2",
+      "name": "Ilha da Solidariedade",
+      "image": "assets/images/islands/ilhaSolidariedade.png",
+      "activities": [
+        {
+          "id": "activity_1",
+          "ordem":1,
+          "name": "Sorriso no rosto",
+          "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746394383/planeta_terra_ilha_solidariedade_5_feli_exuv6s.mp4"
+        
+        },
+        {
+          "id": "activity_2",
+          "ordem":2,
+          "name": "Heroi do dia",
+          "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746394512/planeta_terra_ilha_solidariedade_doa%C3%A7%C3%A3o_ze4qxc.mp4"
+         
+        }
+      ]
+    }
+  ]
+},
+{
+  "id": "fun",
+  "name": "Planeta da Diversão",
+  "image": "assets/images/planets/funPlanet.png",
+  "color": "#FFE483",
+  "island": [
+    {
+      "id": "island_1",
+      "name": "Ilha dos Experimentos",
+      "image":"assets/images/islands/ilhaExperimentos.png",
+      "activities": [
+        
+        {
+          "id": "activity_1",
+          "ordem":1,
+          "name": "Oleo",
+          "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746392705/planeta_diversao_ilha_experiencia_oleo_l62edx.mp4"
+          
+        },
+        {
+          "id": "activity_2",
+          "ordem":2,
+          "name": "Ovo",
+          "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746393032/planeta_diversao_ilha_experiencia_ovo_k6jofy.mp4"
+         
+        },
+        {
+          "id": "activity_3",
+          "ordem":3,
+          "name": "Copo atleta",
+          "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746581283/slqpjddvveicu3pu81sr.mp4"
+         
+        }
+       
+
+      ]
+    },
+    {
+      "id": "island_2",
+      "name": "Ilha dos Brinquedos",
+      "image": "assets/images/islands/ilhaBrinquedos.png",
+      "activities": [
+        {
+          "id": "activity_1",
+          "ordem":1,
+          "name": "Som na caixa",
+          "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746393155/planeta_diversao_ilha_experiencia_som_ocjxxw.mp4"
+         
+        },
+        {
+          "id": "activity_2",
+          "ordem":2,
+          "name": "Cinema antigo",
+          "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746581721/planeta_diversao_ilha_experiencia_cinema_1_phruqy.mp4"
+         
+        },
+        {
+          "id": "activity_3",
+          "ordem":3,
+          "name": "Foguete",
+          "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746390250/ia5ygjdyomz2loocgxlg.mp4"
+          
+        }
+        
+      ]
+    }
+  ]
+},
+{
+  "id": "feelings",
+  "name": "Planeta dos Sentimentos",
+  "image": "assets/images/planets/emotionsPlanet.png",
+  "color": "#87A6FF",
+  "island": [
+    {
+      "id": "island_1",
+      "name": "Ilha das Reflexões",
+      "image": "assets/images/islands/ilhaReflexoes.png",
+      "activities": [
+        {
+          "id": "activity_1",
+          "ordem":1,
+          "name": "Espelho,espelho meu...",
+          "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746393711/planeta_sentimento_ilha_reflexoes_espelho_beyfcz.mp4"
+         
+        },
+        {
+          "id": "activity_2",
+          "ordem":2,
+          "name": "Pizza é União",
+          "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746393901/planeta_sentimento_ilha_reflexoes_pizza_kncvc0.mp4"
+         
+        },
+        {
+          "id": "activity_3",
+          "ordem":3,
+          "name": "Alguém especial",
+          "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746393616/planeta_sentimento_ilha_emo%C3%A7%C3%B5es_carta_bvj6bx.mp4"
+          
+        }
+       
+      ]
+    },
+    {
+      "id": "island_2",
+      "name": "Ilha da Emoções",
+      "image": "assets/images/islands/ilhaEmocoes.png",
+      "activities": [
+        {
+          "id": "activity_1",
+          "ordem":1,
+          "name": "O balão da ansiedade",
+          "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746581506/planeta_sentimento_ilha_emo%C3%A7%C3%B5es_bal%C3%A3o_1_ockeqj.mp4"
+          
+        },
+        {
+          "id": "activity_2",
+          "ordem":2,
+          "name": "A raiva faz parte?",
+          "video": "https://res.cloudinary.com/da0kfwo1r/video/upload/v1746581638/planeta_sentimento_ilha_emo%C3%A7%C3%B5es_raiva_1_jtrzic.mp4"
+          
+        }
+       
+      ]
+    }
+  ]
+}
 ]

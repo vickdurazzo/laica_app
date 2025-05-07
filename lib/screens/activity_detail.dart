@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -116,6 +117,7 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
     };
 
     await userDoc.update({'children': children});
+    print('Progresso atualizado com sucesso!');
 
     return {
       'missions_completed': newMissionsCompleted,
@@ -181,34 +183,112 @@ void _atualizarProgressoLocal(UserProvider userProvider, UserModel user, String 
   userProvider.setUser(updatedUser);
 }
 
-Future<void> _desbloquearProximaAtividade() async {
+Future<void> _desbloquearProximaAtividade(String childId) async {
+  print("🔓 Iniciando _desbloquearProximaAtividade para childId: $childId");
+
+  final userProvider = Provider.of<UserProvider>(context, listen: false);
+  final user = userProvider.user;
+
+  final userId = FirebaseAuth.instance.currentUser?.uid;
+  final child = user?.children.firstWhere((c) => c.child_id == childId);
+
+  if (userId == null || child == null) {
+    print("❌ Usuário ou filho não encontrado.");
+    return;
+  }
+
+  print("👤 userId: $userId");
+  print("👶 Child encontrado: ${child.name}");
+
   final planetId = widget.planetId;
   final islandId = widget.islandId;
   final activityId = widget.activityId;
-  final firestore = FirebaseFirestore.instance;
 
-  final atividadesSnapshot = await firestore
-      .collection('planetas')
-      .doc(planetId)
-      .collection('ilhas')
-      .doc(islandId)
-      .collection('atividades')
-      .orderBy('ordem')
+  print("🪐 planetId: $planetId | 🏝️ islandId: $islandId | 🎯 activityId: $activityId");
+
+  final planetDoc = await FirebaseFirestore.instance
+      .collection('activities')
+      .where('id', isEqualTo: planetId)
       .get();
 
-  bool foundCurrent = false;
-  for (final doc in atividadesSnapshot.docs) {
-    if (doc.id == activityId) {
-      await doc.reference.update({'status': 'completed'});
-      foundCurrent = true;
-      continue;
-    }
-    if (foundCurrent && doc['status'] == 'locked') {
-      await doc.reference.update({'status': 'available'});
-      break;
-    }
+  if (planetDoc.docs.isEmpty) {
+    print("❌ Documento do planeta não encontrado.");
+    return;
   }
+
+  final planetData = planetDoc.docs.first.data();
+  final islands = List<Map<String, dynamic>>.from(planetData['island']);
+  print("📦 Total de ilhas encontradas: ${islands.length}");
+
+  final island = islands.firstWhere((i) => i['id'] == islandId);
+  final activities = List<Map<String, dynamic>>.from(island['activities']);
+  print("🎯 Total de atividades na ilha: ${activities.length}");
+
+  final currentActivity = activities.firstWhere((a) => a['id'] == activityId, orElse: () => {});
+  if (currentActivity.isEmpty) {
+    print("❌ Atividade atual não encontrada.");
+    return;
+  }
+
+  final int currentOrder = currentActivity['ordem'] ?? 0;
+  final int nextOrder = currentOrder + 1;
+  print("✅ Atividade atual encontrada (ordem: $currentOrder), próxima será $nextOrder");
+
+  final updatedActivityStatus = Map<String, dynamic>.from(child.activityStatus);
+
+  // Marca como concluída
+  updatedActivityStatus[planetId] ??= {};
+  updatedActivityStatus[planetId][islandId] ??= {};
+  updatedActivityStatus[planetId][islandId][activityId] = {
+    'status': 'completed',
+    'ordem': currentOrder,
+  };
+  print("✅ Marcou atividade $activityId como 'completed'");
+
+  // Desbloqueia a próxima
+  final nextActivity = activities.firstWhere(
+    (a) => a['ordem'] == nextOrder,
+    orElse: () => {},
+  );
+
+  if (nextActivity.isNotEmpty) {
+    final nextActivityId = nextActivity['id'];
+    updatedActivityStatus[planetId][islandId][nextActivityId] = {
+      'status': 'available',
+      'ordem': nextOrder,
+    };
+    print("🟢 Desbloqueou próxima atividade: $nextActivityId (ordem $nextOrder)");
+  } else {
+    print("ℹ️ Nenhuma próxima atividade com ordem $nextOrder encontrada.");
+  }
+
+  // Atualiza o filho no Firestore com .set()
+  final updatedChild = child.copyWith(activityStatus: updatedActivityStatus);
+  print("✅ Criado updatedChild com nova activityStatus");
+  print("📤 updatedChild.toJson(): ${jsonEncode(updatedChild.toJson())}");
+
+  final updatedChildren = user?.children.map((c) {
+    return c.child_id == child.child_id ? updatedChild.toJson() : c.toJson();
+  }).toList();
+
+  await FirebaseFirestore.instance.collection('users').doc(userId).set({
+    'children': updatedChildren,
+  }, SetOptions(merge: true));
+
+  print("✅ Dados atualizados com .set() no Firestore");
+
+  // Atualiza localmente
+  final updatedChildrenObjects = user?.children.map((c) {
+    return c.child_id == child.child_id ? updatedChild : c;
+  }).toList();
+
+  userProvider.setUser(user!.copyWith(children: updatedChildrenObjects));
+  print("✅ Atualização concluída no provider local");
 }
+
+
+
+
 
 Future<void> _mostrarDialogoSucesso(int earnedStars) async {
   await Future.delayed(const Duration(seconds: 1));
@@ -241,9 +321,11 @@ void _mostrarErroEnvio() {
 
 
 
+
+
   Future<void> _concluirAtividadeComImagem() async {
-      final pickedFile = await _selecionarImagem();
-      if (pickedFile == null) return;
+     // final pickedFile = await _selecionarImagem();
+      //if (pickedFile == null) return;
 
       try {
         final userProvider = Provider.of<UserProvider>(context, listen: false);
@@ -251,12 +333,12 @@ void _mostrarErroEnvio() {
         final userId = FirebaseAuth.instance.currentUser?.uid ?? 'anon';
         final childId = user?.children.first.child_id ?? 'sem_id';
 
-        await _uploadImagemAtividade(pickedFile);
+        //await _uploadImagemAtividade(pickedFile);
 
         final result = await updateUserProgress(userId, childId);
         _atualizarProgressoLocal(userProvider, user!, childId, result);
 
-        await _desbloquearProximaAtividade();
+        await _desbloquearProximaAtividade(childId);
 
         await _mostrarDialogoSucesso(result['earned_stars']);
       } catch (e) {
