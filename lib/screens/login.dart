@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:laica_app/models/user.dart';
+import 'package:laica_app/utils/device_utils.dart';
 import 'package:laica_app/utils/userProvider.dart';
 import 'package:laica_app/widgets/app_subtitle.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+  
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -335,6 +337,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final size = MediaQuery.of(context).size;
     final screenHeight = size.height;
     final screenWidth = size.width;
+    final bool isMobile = DeviceUtils.isMobile();
 
     return Scaffold(
       backgroundColor: const Color(0xFF1B1A3B),
@@ -345,6 +348,26 @@ class _LoginScreenState extends State<LoginScreen> {
             'assets/images/background.png',
             fit: BoxFit.cover,
           ),
+          // Show banner if NOT mobile
+          if (!isMobile)
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                color: Colors.redAccent,
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: const Center(
+                  child: Text(
+                    'Esta aplicação funciona melhor em dispositivos móveis.',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
