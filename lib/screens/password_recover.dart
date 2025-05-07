@@ -94,6 +94,40 @@ class _PasswordRecoverScreenState extends State<PasswordRecoverScreen> {
                         text: 'Resgatar',
                         onPressed: resetPassword,
                       ),
+                      SizedBox(height: screenHeight * 0.04),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/login');
+                            },
+                            child: RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Redefiniu ? ',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w500,
+                                      height: 22 / 14,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: 'Entrar',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.bold,
+                                      height: 22 / 14,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                      
                 
                     

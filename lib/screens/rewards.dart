@@ -46,8 +46,8 @@ class RewardsScreen extends StatelessWidget {
                       child: ProductPromoBanner(
                         title: 'Troque seus pontos por recompensas!',
                         description:
-                            'Possibilidade de troca de pontos por prêmios, oportunidades especiais para nossos astronautas exploradores.',
-                        buttonText: 'Explorar',
+                            'Possibilidade de troca de pontos por prêmios, oportunidades especiais para nossos astronautas exploradores. Avalie sua experiência e entre na lista para receber de antemão os benefícios',
+                        buttonText: 'Avaliar',
                         url: 'https://www.instagram.com/laicasolutions/',
                       ),
                     ),

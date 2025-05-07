@@ -1,14 +1,18 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:laica_app/utils/userProvider.dart';
 import 'package:laica_app/widgets/primary_button.dart';
+import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as path;
 import 'dart:typed_data'; // necessário para Uint8List
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:laica_app/models/user.dart';
 
 class ActivityDetailScreen extends StatefulWidget {
   final String activityTitle;
@@ -39,10 +43,25 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
   void initState() {
     super.initState();
     _initializePlayer();
+
+    // Acessa o estado global do usuário depois que o build estiver disponível
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final user = Provider.of<UserProvider>(context, listen: false).user;
+
+      if (user != null && user.children.isNotEmpty) {
+        final firstChild = user.children[0];
+        print("Child ID: ${firstChild.child_id}");
+        print("Stars: ${firstChild.progress.stars}");
+      } else {
+        print("Usuário ou lista de filhos vazia");
+      }
+    });
   }
 
   Future<void> _initializePlayer() async {
-    _videoController = VideoPlayerController.networkUrl(Uri.parse(widget.activityVideo));
+    _videoController = VideoPlayerController.networkUrl(
+      Uri.parse(widget.activityVideo),
+    );
     await _videoController.initialize();
 
     _chewieController = ChewieController(
@@ -64,56 +83,97 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
     super.dispose();
   }
 
+  Future<Map<String, dynamic>> updateUserProgress(
+    String userId,
+    String childId,
+  ) async {
+    final userDoc = FirebaseFirestore.instance.collection('users').doc(userId);
+    final userSnapshot = await userDoc.get();
 
-Future<void> _pickMedia() async {
-  final picker = ImagePicker();
+    if (!userSnapshot.exists) throw Exception('Usuário não encontrado');
 
-  final XFile? pickedFile = await showModalBottomSheet<XFile?>(
-    context: context,
-    builder: (_) {
-      return SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.image),
-              title: const Text('Selecionar Imagem'),
-              onTap: () async {
-                final file = await picker.pickImage(source: ImageSource.gallery);
-                Navigator.pop(context, file);
-              },
-            ),
-          ],
-        ),
-      );
-    },
-  );
+    final userData = userSnapshot.data();
+    final children = userData?['children'] as List<dynamic>;
 
-  if (pickedFile != null) {
+    // Encontrar a criança correta
+    final childIndex = children.indexWhere(
+      (child) => child['child_id'] == childId,
+    );
+    if (childIndex == -1) throw Exception('Criança não encontrada');
+
+    final child = children[childIndex];
+    final currentProgress =
+        child['progress'] ?? {'missions_completed': 0, 'stars': 0};
+
+    final newMissionsCompleted =
+        (currentProgress['missions_completed'] ?? 0) + 1;
+    final newStars = (currentProgress['stars'] ?? 0) + 5;
+
+    // Atualizar o progresso da criança no array
+    children[childIndex]['progress'] = {
+      'missions_completed': newMissionsCompleted,
+      'stars': newStars,
+    };
+
+    await userDoc.update({'children': children});
+
+    return {
+      'missions_completed': newMissionsCompleted,
+      'stars': newStars,
+      'earned_stars': 5,
+    };
+  }
+
+  Future<void> _concluirAtividadeComImagem() async {
+    final picker = ImagePicker();
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final user = userProvider.user;
+
+    final XFile? pickedFile = await showModalBottomSheet<XFile?>(
+      context: context,
+      builder: (_) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.image),
+                title: const Text('Selecionar Imagem'),
+                onTap: () async {
+                  final file = await picker.pickImage(
+                    source: ImageSource.gallery,
+                  );
+                  Navigator.pop(context, file);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    if (pickedFile == null) return;
+
     try {
-      // IDs fictícios (substitua pelos reais)
       final String planetId = widget.planetId;
       final String islandId = widget.islandId;
       final String activityId = widget.activityId;
-      final String userId = FirebaseAuth.instance.currentUser?.uid ?? 'anon';
 
-      // Obtem extensão (ex: .jpg)
+      final String userId = FirebaseAuth.instance.currentUser?.uid ?? 'anon';
+      final String childId = user?.children.first.child_id ?? 'sem_id';
+
       final fileExtension = path.extension(pickedFile.name);
       final fileName = '$planetId+$islandId+$activityId+$userId$fileExtension';
       final filePath = 'atividadesFeitas/$fileName';
-
       final ref = FirebaseStorage.instance.ref().child(filePath);
 
       if (kIsWeb) {
-        // Flutter Web: usa Uint8List
         Uint8List data = await pickedFile.readAsBytes();
-
         await ref.putData(
           data,
           SettableMetadata(contentType: _getContentType(fileExtension)),
         );
       } else {
-        // Mobile: usa File
         final file = File(pickedFile.path);
         await ref.putFile(
           file,
@@ -121,47 +181,105 @@ Future<void> _pickMedia() async {
         );
       }
 
-      // Diálogo de sucesso
+      // Atualiza progresso no Firestore
+      final result = await updateUserProgress(userId, childId);
+
+      // Atualiza o provider local com o novo progresso
+      final updatedChildren =
+          user!.children.map((child) {
+            if (child.child_id == childId) {
+              final updatedProgress = child.progress.copyWith(
+                missions_completed: result['missions_completed'],
+                stars: result['stars'],
+              );
+              return child.copyWith(progress: updatedProgress);
+            }
+            return child;
+          }).toList();
+
+      final updatedUser = user.copyWith(children: updatedChildren);
+      userProvider.setUser(updatedUser);
+    
+
+      // ➕ Novo passo: desbloquear próxima atividade
+      final firestore = FirebaseFirestore.instance;
+      final atividadesSnapshot =
+          await firestore
+              .collection('planetas')
+              .doc(planetId)
+              .collection('ilhas')
+              .doc(islandId)
+              .collection('atividades')
+              .orderBy(
+                'ordem',
+              ) // assumindo campo 'ordem' para definir sequência
+              .get();
+
+      print(atividadesSnapshot);
+
+      bool foundCurrent = false;
+      for (final doc in atividadesSnapshot.docs) {
+        if (doc.id == activityId) {
+          // ✅ Atualiza o status da atividade atual para "completed"
+          await doc.reference.update({'status': 'completed'});
+          foundCurrent = true;
+          continue;
+        }
+
+        if (foundCurrent && doc['status'] == 'locked') {
+          // ✅ Desbloqueia a próxima atividade
+          await doc.reference.update({'status': 'available'});
+          break;
+        }
+      }
+
+      // Feedback visual ao usuário
       await Future.delayed(const Duration(seconds: 1));
       showDialog(
         context: context,
-        builder: (_) => AlertDialog(
-          title: const Text("Atividade concluída"),
-          content: const Text("Envio realizado com sucesso!\nA próxima atividade será desbloqueada em breve."),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-              },
-              child: const Text("OK"),
+        builder:
+            (_) => AlertDialog(
+              title: const Text("Atividade concluída"),
+              content: Text(
+                "Envio realizado com sucesso!\nVocê ganhou ${result['earned_stars']} estrelas!",
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Fecha o AlertDialog
+                    Navigator.pop(context); // Volta uma tela
+                  },
+                  child: const Text("OK"),
+                ),
+              ],
             ),
-          ],
-        ),
       );
     } catch (e) {
-      debugPrint('Erro ao enviar imagem: $e');
+      debugPrint('Erro ao concluir atividade: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Erro ao enviar imagem. Tente novamente.')),
+        const SnackBar(
+          content: Text(
+            'Erro ao enviar imagem ou atualizar progresso. Tente novamente.',
+          ),
+        ),
       );
     }
   }
-}
 
-// Função auxiliar para definir contentType correto
-String _getContentType(String extension) {
-  switch (extension.toLowerCase()) {
-    case '.png':
-      return 'image/png';
-    case '.jpg':
-    case '.jpeg':
-      return 'image/jpeg';
-    case '.gif':
-      return 'image/gif';
-    default:
-      return 'application/octet-stream'; // padrão
+  // Função auxiliar para definir contentType correto
+  String _getContentType(String extension) {
+    switch (extension.toLowerCase()) {
+      case '.png':
+        return 'image/png';
+      case '.jpg':
+      case '.jpeg':
+        return 'image/jpeg';
+      case '.gif':
+        return 'image/gif';
+      default:
+        return 'application/octet-stream'; // padrão
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -192,7 +310,8 @@ String _getContentType(String extension) {
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: [
-                  if (_chewieController != null && _videoController.value.isInitialized)
+                  if (_chewieController != null &&
+                      _videoController.value.isInitialized)
                     AspectRatio(
                       aspectRatio: _videoController.value.aspectRatio,
                       child: Chewie(controller: _chewieController!),
@@ -205,7 +324,7 @@ String _getContentType(String extension) {
                   const SizedBox(height: 30),
                   PrimaryButton(
                     text: 'Concluir atividade',
-                    onPressed: _pickMedia,
+                    onPressed: _concluirAtividadeComImagem,
                   ),
                 ],
               ),

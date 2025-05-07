@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:laica_app/models/user.dart';
+import 'package:laica_app/utils/userProvider.dart';
 import 'package:laica_app/widgets/app_subtitle.dart';
+import 'package:provider/provider.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/app_title.dart';
 import '../widgets/form_input.dart';
@@ -19,54 +22,40 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+    final TextEditingController _emailController = TextEditingController();
+    final TextEditingController _passwordController = TextEditingController();
 
-  void _login(BuildContext context) async {
-      //final email = _emailController.text.trim();
-      //final password = _passwordController.text;
-      /*
-      if (email.isEmpty || password.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Preencha todos os campos')),
-        );
-        return;
-      }
+    void _login(BuildContext context) async {
+    try {
+      final authResult = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
 
-      */
-      
-      try {
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text,
-        );
-        Navigator.pushReplacementNamed(context, '/menu');
-      } catch (e) {
-        Fluttertoast.showToast(msg: 'Erro: $e');
-      }
+      final uid = authResult.user?.uid;
+      if (uid == null) throw Exception('Erro ao obter UID do usuário.');
 
+      // Buscar dados no Firestore
+      final docSnapshot = await FirebaseFirestore.instance
+          .collection('users') // ou 'user', dependendo da sua coleção
+          .doc(uid)
+          .get();
 
-      /*
-      // Simulação de validação
-      const mockEmail = 'teste';
-      const mockPassword = '123';
+      if (!docSnapshot.exists) throw Exception('Usuário não encontrado no Firestore.');
 
-      if (email == mockEmail && password == mockPassword) {
-        print('Login realizado com sucesso!');
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Login realizado com sucesso!')),
-        );
-        Navigator.pushNamed(context, '/menu');
-      } else {
-        print('Credenciais inválidas.');
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('E-mail ou senha incorretos')),
-        );
-      }
-      
-      */
-      
+      final userData = docSnapshot.data();
+      final userModel = UserModel.fromJson(userData!);
+
+      // Salvar no estado global
+      Provider.of<UserProvider>(context, listen: false).setUser(userModel);
+
+      // Navegar para o menu
+      Navigator.pushReplacementNamed(context, '/menu');
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Erro ao fazer login: $e');
     }
+  }
+
 
     
 

@@ -52,6 +52,33 @@ class UserModel {
       'last_login': last_login,
     };
   }
+
+  UserModel copyWith({
+    String? family_name,
+    String? email,
+    String? password_hash,
+    bool? accepted_terms,
+    bool? receive_updates,
+    int? cellphone,
+    List<Child>? children,
+    String? created_at,
+    String? last_login,
+  }) {
+    return UserModel(
+      user_id: user_id, // geralmente fixo
+      family_name: family_name ?? this.family_name,
+      email: email ?? this.email,
+      password_hash: password_hash ?? this.password_hash,
+      accepted_terms: accepted_terms ?? this.accepted_terms,
+      receive_updates: receive_updates ?? this.receive_updates,
+      cellphone: cellphone ?? this.cellphone,
+      children: children ?? this.children,
+      created_at: created_at ?? this.created_at,
+      last_login: last_login ?? this.last_login,
+    );
+  }
+
+
 }
 
 class Child {
@@ -90,6 +117,22 @@ class Child {
       'progress': progress.toJson(),
     };
   }
+
+  Child copyWith({
+    String? name,
+    String? birthday,
+    String? avatar,
+    Progress? progress,
+  }) {
+    return Child(
+      child_id: child_id, // geralmente não muda
+      name: name ?? this.name,
+      birthday: birthday ?? this.birthday,
+      avatar: avatar ?? this.avatar,
+      progress: progress ?? this.progress,
+    );
+  }
+
 }
 
 class Progress {
@@ -113,5 +156,15 @@ class Progress {
       'missions_completed': missions_completed,
       'stars': stars,
     };
+  }
+
+  Progress copyWith({
+    int? missions_completed,
+    int? stars,
+  }) {
+    return Progress(
+      missions_completed: missions_completed ?? this.missions_completed,
+      stars: stars ?? this.stars,
+    );
   }
 }
