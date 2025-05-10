@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:laica_app/utils/userProvider.dart';
 import 'package:laica_app/widgets/app_title.dart';
@@ -14,8 +15,14 @@ class IslandsScreen extends StatelessWidget {
 
   const IslandsScreen({super.key, required this.planet});
 
-  @override
+ @override
   Widget build(BuildContext context) {
+    Future.microtask(() {
+      FirebaseAnalytics.instance.logScreenView(
+        screenName: 'IslandsScreen_${planet.name}', // ou planet.id
+        screenClass: 'IslandsScreen',
+      );
+    });
     return Scaffold(
       backgroundColor: const Color(0xFF1B1A3B),
       appBar: AppBar(

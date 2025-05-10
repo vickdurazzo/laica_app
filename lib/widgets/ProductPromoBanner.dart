@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -18,7 +19,7 @@ class ProductPromoBanner extends StatelessWidget {
 
 
   Future<void> _launchURL() async {
-  final Uri uri = Uri.parse("https://www.instagram.com/laicasolutions/");
+  final Uri uri = Uri.parse("https://docs.google.com/forms/d/e/1FAIpQLScoiE2hKE5Uj0s_t-p2R8zzKX6vmuW80icepnZIiHu2_M-nbA/viewform?usp=dialog");
 
   if (!await launchUrl(
     uri,
@@ -26,6 +27,14 @@ class ProductPromoBanner extends StatelessWidget {
   )) {
     throw 'Não foi possível abrir o link $uri';
   }
+
+  FirebaseAnalytics.instance.logEvent(
+      name: 'botao_avaliar_clicado',
+      parameters: {
+       
+        'descricao': 'Usuário clicou para avaliar',
+      },
+    );
 }
 
   @override

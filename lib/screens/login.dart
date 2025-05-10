@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:laica_app/models/user.dart';
 import 'package:laica_app/utils/device_utils.dart';
@@ -28,6 +29,13 @@ class _LoginScreenState extends State<LoginScreen> {
     final TextEditingController _passwordController = TextEditingController();
 
     void _login(BuildContext context) async {
+      FirebaseAnalytics.instance.logEvent(
+      name: 'botao_login_clicado',
+      parameters: {
+        'tela': 'LoginScreen',
+        'descricao': 'Usuário clicou em botão de login',
+      },
+    );
     try {
       final authResult = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text.trim(),

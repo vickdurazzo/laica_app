@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:laica_app/utils/userProvider.dart';
 import 'package:laica_app/widgets/ProductPromoBanner.dart';
@@ -14,6 +15,8 @@ class ActivitiesScreen extends StatelessWidget {
 
 
   const ActivitiesScreen({super.key, required this.island, required this.planetId,required this.childId});
+
+  
 
   @override
   Widget build(BuildContext context) {

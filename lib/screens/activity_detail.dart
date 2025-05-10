@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,6 +22,8 @@ class ActivityDetailScreen extends StatefulWidget {
   final String planetId;
   final String islandId;
   final String activityId;
+  
+
 
   const ActivityDetailScreen({
     super.key,
@@ -29,6 +32,7 @@ class ActivityDetailScreen extends StatefulWidget {
     required this.planetId,
     required this.islandId,
     required this.activityId,
+    
   });
 
   @override
@@ -39,11 +43,31 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
   File? _selectedFile;
   late VideoPlayerController _videoController;
   ChewieController? _chewieController;
+  DateTime? _screenEnterTime;
 
   @override
   void initState() {
     super.initState();
+    // Log da tela com parâmetros adicionais
+    FirebaseAnalytics.instance.logScreenView(
+      screenName: 'ActivityDetailScreen',
+      screenClass: 'ActivityDetailScreen',
+    );
+
+    // Evento personalizado com detalhes da atividade
+    FirebaseAnalytics.instance.logEvent(
+      name: 'activity_viewed',
+      parameters: {
+        'activity_id': widget.activityId,
+        'activity_title': widget.activityTitle,
+        'island_id': widget.islandId,
+        'planet_id': widget.planetId,
+      },
+    );
+
     _initializePlayer();
+
+     _screenEnterTime = DateTime.now();
 
     // Acessa o estado global do usuário depois que o build estiver disponível
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -81,6 +105,17 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
   void dispose() {
     _videoController.dispose();
     _chewieController?.dispose();
+    if (_screenEnterTime != null) {
+    final duration = DateTime.now().difference(_screenEnterTime!);
+
+    FirebaseAnalytics.instance.logEvent(
+      name: 'tempo_tela',
+      parameters: {
+        'tela': 'ActivityDetailScreen', // ou a tela que for
+        'segundos': duration.inSeconds,
+      },
+    );
+  }
     super.dispose();
   }
 

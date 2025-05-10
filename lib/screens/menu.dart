@@ -1,4 +1,5 @@
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:laica_app/widgets/app_subtitle.dart';
 import 'package:laica_app/widgets/app_title.dart';
@@ -13,7 +14,14 @@ class MenuScreen extends StatelessWidget {
   const MenuScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+   Widget build(BuildContext context) {
+    // Envia log de visualização da tela
+    Future.microtask(() {
+      FirebaseAnalytics.instance.logScreenView(
+        screenName: 'MenuScreen',
+        screenClass: 'MenuScreen',
+      );
+    });
     return Scaffold(
       backgroundColor: const Color(0xFF1B1A3B),
       body: Stack(

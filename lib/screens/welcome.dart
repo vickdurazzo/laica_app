@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:laica_app/widgets/app_subtitle.dart';
 import 'package:laica_app/widgets/app_title.dart';
@@ -7,8 +8,15 @@ import '../utils/device_utils.dart'; // Import the helper
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
+  
   @override
   Widget build(BuildContext context) {
+    Future.microtask(() {
+      FirebaseAnalytics.instance.logScreenView(
+        screenName: 'WelcomeScreen',
+        screenClass: 'WelcomeScreen',
+      );
+    });
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
