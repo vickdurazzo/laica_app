@@ -1,22 +1,94 @@
+import 'package:laica_app/widgets/app_title.dart';
+import 'package:provider/provider.dart';
+import '../models/planet.dart';
+import 'activities.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:laica_app/utils/userProvider.dart';
 import 'package:laica_app/widgets/ProductPromoBanner.dart';
 import '../models/island.dart';
 import 'activity_detail.dart';
-import 'package:provider/provider.dart';
 
 
 
-class ActivitiesScreen extends StatelessWidget {
+
+
+
+
+
+class ActivitiesScreen extends StatefulWidget {
+
   final Island island;
   final String planetId;
   final String childId;
 
 
-  const ActivitiesScreen({super.key, required this.island, required this.planetId,required this.childId});
+  const ActivitiesScreen({
+    super.key,
+    required this.island,
+    required this.planetId,
+    required this.childId,
+    
+   
+  });
 
   
+
+  
+
+  @override
+  State<ActivitiesScreen> createState() => _ActivitiesScreenState();
+}
+
+class _ActivitiesScreenState extends State<ActivitiesScreen> {
+  
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  late DateTime _startTime;
+
+  
+  @override
+  void initState() {
+    super.initState();
+  
+    _startTime = DateTime.now();
+
+    // Log de visualização da tela
+    analytics.logScreenView(
+      screenName: 'ActivitiesScreen',
+      screenClass: 'ActivitiesScreen',
+    );
+
+    // Evento customizado ao abrir
+    analytics.logEvent(
+      name: 'Activities_screen_opened',
+    );
+  }
+
+  @override
+  void dispose() {
+   
+    
+    final duration = DateTime.now().difference(_startTime);
+
+    // Log do tempo de tela
+    analytics.logEvent(
+      name: 'tempo_tela',
+      parameters: {
+        'screen': 'ActivitiesScreen',
+        'seconds': duration.inSeconds,
+      },
+    );
+    super.dispose();
+  }
+
+  void _handleButtonClick(nome, label) {
+    analytics.logEvent(
+      name: nome+"_button_clicked",
+      parameters: {
+        'label': label,
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +105,7 @@ class ActivitiesScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 12.0, top: 12.0),
             child: Image.asset(
-              island.image,
+              widget.island.image,
               height: 120,
             ),
           ),
@@ -58,13 +130,12 @@ class ActivitiesScreen extends StatelessWidget {
     builder: (context, userProvider, _) {
       final user = userProvider.user;
       final activityStatus = user?.children.firstWhere(
-        (c) => c.child_id == childId ).activityStatus;
+      (c) => c.child_id == widget.childId).activityStatus;
 
-      // atualiza dinamicamente os status com base no provider
-      final updatedActivities = island.activities.map((activity) {
-        final status = activityStatus?[planetId]?[island.id]?[activity.id]?['status'] ?? "locked";
-        return activity.copyWith(status: status); // precisa do método copyWith no seu modelo
-      }).toList();
+    final updatedActivities = widget.island.activities.map((activity) {
+      final status = activityStatus?[widget.planetId]?[widget.island.id]?[activity.id]?['status'] ?? "locked";
+      return activity.copyWith(status: status);
+    }).toList();
       final hasCompletedActivity = updatedActivities.any((activity) => activity.status == 'completed');
 
 
@@ -82,14 +153,15 @@ class ActivitiesScreen extends StatelessWidget {
           final activityWidget = GestureDetector(
             onTap: isAccessible
                 ? () {
+                  _handleButtonClick('activities', activity.name);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => ActivityDetailScreen(
                           activityTitle: activity.name,
                           activityVideo: activity.video,
-                          planetId: planetId,
-                          islandId: island.id,
+                          planetId: widget.planetId,
+                          islandId: widget.island.id,
                           activityId: activity.id,
                         ),
                       ),

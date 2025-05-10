@@ -1,13 +1,61 @@
 import 'package:flutter/material.dart';
-import 'package:laica_app/widgets/app_title.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/material.dart';
 import 'package:laica_app/widgets/ProductPromoBanner.dart';
-
-
-
+import 'package:laica_app/widgets/app_title.dart';
 import '../widgets/bottom_nav.dart';
 
-class RewardsScreen extends StatelessWidget {
+
+class RewardsScreen extends StatefulWidget {
   const RewardsScreen({super.key});
+
+  @override
+  State<RewardsScreen> createState() => _RewardsScreenState();
+}
+
+class _RewardsScreenState extends State<RewardsScreen> {
+  
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  late DateTime _startTime;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTime = DateTime.now();
+
+    // Log de visualização da tela
+    analytics.logScreenView(
+      screenName: 'RewardsScreen',
+      screenClass: 'RewardsScreen',
+    );
+
+    // Evento customizado ao abrir
+    analytics.logEvent(
+      name: 'rewards_screen_opened',
+    );
+  }
+
+  @override
+  void dispose() {
+    
+    final duration = DateTime.now().difference(_startTime);
+
+    // Log do tempo de tela
+    analytics.logEvent(
+      name: 'tempo_tela',
+      parameters: {
+        'screen': 'RewardsScreen',
+        'seconds': duration.inSeconds,
+      },
+    );
+    super.dispose();
+  }
+
+ 
+  
+
+
+
 
   @override
   Widget build(BuildContext context) {

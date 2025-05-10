@@ -1,15 +1,14 @@
-
 import 'package:flutter/material.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import '../widgets/bottom_nav.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/profile_option.dart';
 import '../models/user.dart';
 import 'support.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-// Importa o pacote de autenticação do Firebase
 import 'package:firebase_auth/firebase_auth.dart';
 // Importa o pacote para exibir mensagens rápidas (toasts)
+
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -19,20 +18,13 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  late DateTime _startTime;
+
   UserModel? _user;
 
-  @override
-  void initState() {
-    super.initState();
-    _loadUserData();
-  }
-
-  Future<void> _loadUserData() async {
-    final user = await _fetchUserData();
-    setState(() => _user = user);
-  }
-
-    Future<UserModel?> _fetchUserData() async {
+  Future<UserModel?> _fetchUserData() async {
     try {
       final user = FirebaseAuth.instance.currentUser;
       if (user == null) {
@@ -55,20 +47,72 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+   Future<void> _loadUserData() async {
+    final user = await _fetchUserData();
+    setState(() => _user = user);
+  }
+
   void _logout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
+    _handleButtonClick('logout', 'logout');
     Navigator.pushReplacementNamed(context, '/'); // Redireciona para a tela de login
   }
 
-  String _capitalize(String text) {
-  if (text.isEmpty) return text;
-  return text[0].toUpperCase() + text.substring(1);
-}
+   String _capitalize(String text) {
+    if (text.isEmpty) return text;
+    return text[0].toUpperCase() + text.substring(1);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+    _startTime = DateTime.now();
+
+    // Log de visualização da tela
+    analytics.logScreenView(
+      screenName: 'ProfileScreen',
+      screenClass: 'ProfileScreen',
+    );
+
+    // Evento customizado ao abrir
+    analytics.logEvent(
+      name: 'profile_screen_opened',
+    );
+  }
+
+  @override
+  void dispose() {
+    
+    final duration = DateTime.now().difference(_startTime);
+
+    // Log do tempo de tela
+    analytics.logEvent(
+      name: 'tempo_tela',
+      parameters: {
+        'screen': 'ProfileScreen',
+        'seconds': duration.inSeconds,
+      },
+    );
+    super.dispose();
+  }
+
+  void _handleButtonClick(nome, label) {
+    analytics.logEvent(
+      name: nome+"_button_clicked",
+      parameters: {
+        'label': label,
+      },
+    );
+  }
+
+  
+
 
 
 
   @override
-  Widget build(BuildContext context) {
+   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF1B1A3B),
       body: Stack(

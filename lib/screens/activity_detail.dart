@@ -16,8 +16,12 @@ import 'dart:typed_data'; // necessário para Uint8List
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:laica_app/models/user.dart';
 
+
+
+
 class ActivityDetailScreen extends StatefulWidget {
-  final String activityTitle;
+
+   final String activityTitle;
   final String activityVideo;
   final String planetId;
   final String islandId;
@@ -40,50 +44,59 @@ class ActivityDetailScreen extends StatefulWidget {
 }
 
 class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
-  File? _selectedFile;
+  
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  late DateTime _startTime;
   late VideoPlayerController _videoController;
   ChewieController? _chewieController;
-  DateTime? _screenEnterTime;
 
+  
   @override
   void initState() {
     super.initState();
-    // Log da tela com parâmetros adicionais
-    FirebaseAnalytics.instance.logScreenView(
+    
+    _startTime = DateTime.now();
+
+    // Log de visualização da tela
+    analytics.logScreenView(
       screenName: 'ActivityDetailScreen',
       screenClass: 'ActivityDetailScreen',
     );
 
-    // Evento personalizado com detalhes da atividade
-    FirebaseAnalytics.instance.logEvent(
-      name: 'activity_viewed',
-      parameters: {
-        'activity_id': widget.activityId,
-        'activity_title': widget.activityTitle,
-        'island_id': widget.islandId,
-        'planet_id': widget.planetId,
-      },
+    // Evento customizado ao abrir
+    analytics.logEvent(
+      name: 'ActivitiesDetail_screen_opened',
     );
-
     _initializePlayer();
-
-     _screenEnterTime = DateTime.now();
-
-    // Acessa o estado global do usuário depois que o build estiver disponível
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final user = Provider.of<UserProvider>(context, listen: false).user;
-
-      if (user != null && user.children.isNotEmpty) {
-        final firstChild = user.children[0];
-       //print("Child ID: ${firstChild.child_id}");
-       //print("Stars: ${firstChild.progress.stars}");
-      } else {
-       //print("Usuário ou lista de filhos vazia");
-      }
-    });
   }
 
-  Future<void> _initializePlayer() async {
+  @override
+  void dispose() {
+     _videoController.dispose();
+    _chewieController?.dispose();
+    
+    final duration = DateTime.now().difference(_startTime);
+
+    // Log do tempo de tela
+    analytics.logEvent(
+      name: 'tempo_tela',
+      parameters: {
+        'screen': 'ActivityDetailScreen',
+        'seconds': duration.inSeconds,
+      },
+    );
+    super.dispose();
+  }
+
+  void _handleButtonClick(nome, label) {
+    analytics.logEvent(
+      name: nome+"_button_clicked",
+      parameters: {
+        'label': label,
+      },
+    );
+  }
+   Future<void> _initializePlayer() async {
     _videoController = VideoPlayerController.networkUrl(
       Uri.parse(widget.activityVideo),
     );
@@ -101,23 +114,6 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
     setState(() {});
   }
 
-  @override
-  void dispose() {
-    _videoController.dispose();
-    _chewieController?.dispose();
-    if (_screenEnterTime != null) {
-    final duration = DateTime.now().difference(_screenEnterTime!);
-
-    FirebaseAnalytics.instance.logEvent(
-      name: 'tempo_tela',
-      parameters: {
-        'tela': 'ActivityDetailScreen', // ou a tela que for
-        'segundos': duration.inSeconds,
-      },
-    );
-  }
-    super.dispose();
-  }
 
   Future<Map<String, dynamic>> updateUserProgress(
     String userId,
@@ -326,7 +322,7 @@ Future<void> _desbloquearProximaAtividade(String childId) async {
 
 
 Future<void> _mostrarDialogoSucesso(int earnedStars) async {
-  await Future.delayed(const Duration(seconds: 1));
+  await Future.delayed(const Duration(milliseconds: 400));
   showDialog(
     context: context,
     builder: (_) => AlertDialog(
@@ -442,7 +438,10 @@ void _mostrarErroEnvio() {
                   const SizedBox(height: 30),
                   PrimaryButton(
                     text: 'Concluir atividade',
-                    onPressed: _concluirAtividadeComImagem,
+                    onPressed: (){
+                      _handleButtonClick('concluir_atividade', 'concluirAtividade');
+                      _concluirAtividadeComImagem();
+                    }
                   ),
                 ],
               ),

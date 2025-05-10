@@ -1,6 +1,5 @@
-
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:laica_app/widgets/app_subtitle.dart';
 import 'package:laica_app/widgets/app_title.dart';
 import '../widgets/card_widget.dart';
@@ -10,18 +9,69 @@ import '../models/planet.dart';
 import '../utils/load_planets.dart';
 import 'islands.dart'; 
 
-class MenuScreen extends StatelessWidget {
+class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
 
   @override
-   Widget build(BuildContext context) {
-    // Envia log de visualização da tela
-    Future.microtask(() {
-      FirebaseAnalytics.instance.logScreenView(
-        screenName: 'MenuScreen',
-        screenClass: 'MenuScreen',
-      );
-    });
+  State<MenuScreen> createState() => _MenuScreenState();
+}
+
+class _MenuScreenState extends State<MenuScreen> {
+  
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  late DateTime _startTime;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTime = DateTime.now();
+
+    // Log de visualização da tela
+    analytics.logScreenView(
+      screenName: 'MenuScreen',
+      screenClass: 'MenuScreen',
+    );
+
+    // Evento customizado ao abrir
+    analytics.logEvent(
+      name: 'menu_screen_opened',
+    );
+  }
+
+  @override
+  void dispose() {
+    
+    final duration = DateTime.now().difference(_startTime);
+
+    // Log do tempo de tela
+    analytics.logEvent(
+      name: 'tempo_tela',
+      parameters: {
+        'screen': 'MenuScreen',
+        'seconds': duration.inSeconds,
+      },
+    );
+    super.dispose();
+  }
+
+  void _handleButtonClick(nome, label) {
+    analytics.logEvent(
+      name: nome+"_button_clicked",
+      parameters: {
+        'label': label,
+      },
+    );
+  }
+
+  
+
+
+
+
+  @override
+ Widget build(BuildContext context) {
+   
+
     return Scaffold(
       backgroundColor: const Color(0xFF1B1A3B),
       body: Stack(
@@ -71,6 +121,7 @@ class MenuScreen extends StatelessWidget {
                             final planet = planets[index];
                             return GestureDetector(
                               onTap: () {
+                                _handleButtonClick("planet", planet.name);
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(

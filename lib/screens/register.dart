@@ -1,37 +1,38 @@
-//import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:intl/intl.dart';
 import 'package:laica_app/widgets/app_title.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/form_input.dart';
-//import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
-// Importa o pacote de autenticação do Firebase
 import 'package:firebase_auth/firebase_auth.dart';
-// Importa o pacote para exibir mensagens rápidas (toasts)
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:laica_app/utils/map_activities.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+
+
+
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
   @override
-  _RegisterScreenState createState() => _RegisterScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  late DateTime _startTime;
+
   final TextEditingController _familyNameController = TextEditingController();
   final TextEditingController _childNameController = TextEditingController();
-  final TextEditingController _childBirthdayController =
-      TextEditingController();
+  final TextEditingController _childBirthdayController = TextEditingController();
   final TextEditingController _cellphoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
 
   bool _termsAgreed = false;
   bool _updatesSubscribed = false;
@@ -50,7 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  void _handleRegister() async {
+   void _handleRegister() async {
     if (_familyNameController.text.isEmpty ||
         _childNameController.text.isEmpty ||
         _childBirthdayController.text.isEmpty ||
@@ -167,16 +168,59 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  
+    _startTime = DateTime.now();
+
+    // Log de visualização da tela
+    analytics.logScreenView(
+      screenName: 'RegisterScreen',
+      screenClass: 'RegisterScreen',
+    );
+
+    // Evento customizado ao abrir
+    analytics.logEvent(
+      name: 'register_screen_opened',
+    );
+  }
+
+  @override
   void dispose() {
-    _familyNameController.dispose();
+     _familyNameController.dispose();
     _childNameController.dispose();
     _childBirthdayController.dispose();
     _emailController.dispose();
     _cellphoneController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    
+    final duration = DateTime.now().difference(_startTime);
+
+    // Log do tempo de tela
+    analytics.logEvent(
+      name: 'tempo_tela',
+      parameters: {
+        'screen': 'RegisterScreen',
+        'seconds': duration.inSeconds,
+      },
+    );
     super.dispose();
   }
+
+  void _handleButtonClick(nome, label) {
+    analytics.logEvent(
+      name: nome+"_button_clicked",
+      parameters: {
+        'label': label,
+      },
+    );
+  }
+
+  
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -335,7 +379,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   SizedBox(height: screenHeight * 0.02),
                   PrimaryButton(
                     text: 'Começar a Aventura',
-                    onPressed: _handleRegister,
+                    onPressed: () {
+                      _handleButtonClick('register', 'register');
+                      _handleRegister();
+                    } ,
                   ),
                   SizedBox(height: screenHeight * 0.03),
                   GestureDetector(

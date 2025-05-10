@@ -32,7 +32,7 @@ class ProductPromoBanner extends StatelessWidget {
       name: 'botao_avaliar_clicado',
       parameters: {
        
-        'descricao': 'Usuário clicou para avaliar',
+        'label': 'Botao Avaliar',
       },
     );
 }

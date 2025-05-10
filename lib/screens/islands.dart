@@ -1,28 +1,78 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:laica_app/utils/userProvider.dart';
 import 'package:laica_app/widgets/app_title.dart';
 import 'package:provider/provider.dart';
 import '../models/planet.dart';
-import 'activities.dart'; // ajuste o caminho se necessário
+import 'activities.dart';
 
 
-class IslandsScreen extends StatelessWidget {
-  final Planet planet;
 
-  
 
+
+class IslandsScreen extends StatefulWidget {
 
   const IslandsScreen({super.key, required this.planet});
 
- @override
+  final Planet planet;
+
+  @override
+  State<IslandsScreen> createState() => _IslandsScreenState();
+}
+
+class _IslandsScreenState extends State<IslandsScreen> {
+  
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  late DateTime _startTime;
+
+  
+  @override
+  void initState() {
+    super.initState();
+   
+    _startTime = DateTime.now();
+
+    // Log de visualização da tela
+    analytics.logScreenView(
+      screenName: 'IslandsScreen',
+      screenClass: 'IslandsScreen',
+    );
+
+    // Evento customizado ao abrir
+    analytics.logEvent(
+      name: 'islands_screen_opened',
+    );
+  }
+
+  @override
+  void dispose() {
+   
+    
+    final duration = DateTime.now().difference(_startTime);
+
+    // Log do tempo de tela
+    analytics.logEvent(
+      name: 'tempo_tela',
+      parameters: {
+        'screen': 'IslandsScreen',
+        'seconds': duration.inSeconds,
+      },
+    );
+    super.dispose();
+  }
+
+  void _handleButtonClick(nome, label) {
+    analytics.logEvent(
+      name: nome+"_button_clicked",
+      parameters: {
+        'label': label,
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Future.microtask(() {
-      FirebaseAnalytics.instance.logScreenView(
-        screenName: 'IslandsScreen_${planet.name}', // ou planet.id
-        screenClass: 'IslandsScreen',
-      );
-    });
+   
     return Scaffold(
       backgroundColor: const Color(0xFF1B1A3B),
       appBar: AppBar(
@@ -36,7 +86,7 @@ class IslandsScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 12.0),
             child: Image.asset(
-              planet.image,
+              widget.planet.image,
               height: 120,
             ),
           ),
@@ -67,10 +117,10 @@ class IslandsScreen extends StatelessWidget {
                           height: MediaQuery.of(context).size.height * 0.7, // Restrict ListView height
                           child: ListView.builder(
                             physics: const BouncingScrollPhysics(),
-                            itemCount: planet.island.length,
+                            itemCount: widget.planet.island.length,
                             itemBuilder: (context, index) {
-                              final island = planet.island[index];
-                              final planetId = planet.id;
+                              final island = widget.planet.island[index];
+                              final planetId = widget.planet.id;
                               final userProvider = Provider.of<UserProvider>(context, listen: false);
                               final childId = userProvider.user?.children.first.child_id ?? '';
                               //print("TELA DO PLANETA PARA ILHA");
@@ -81,6 +131,7 @@ class IslandsScreen extends StatelessWidget {
                                   padding: const EdgeInsets.symmetric(vertical: 12.0),
                                   child: GestureDetector(
                                     onTap: () {
+                                      _handleButtonClick('island', island.name);
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -121,3 +172,9 @@ class IslandsScreen extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
+  

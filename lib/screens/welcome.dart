@@ -1,3 +1,5 @@
+// Exemplo de como implementar o plano de tagueamento Firebase Analytics
+// Aplicável a cada tela do seu app
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:laica_app/widgets/app_subtitle.dart';
@@ -5,18 +7,60 @@ import 'package:laica_app/widgets/app_title.dart';
 import '../widgets/primary_button.dart';
 import '../utils/device_utils.dart'; // Import the helper
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
 
-  
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  late DateTime _startTime;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTime = DateTime.now();
+
+    // Log de visualização da tela
+    analytics.logScreenView(
+      screenName: 'WelcomeScreen',
+      screenClass: 'WelcomeScreen',
+    );
+
+    // Evento customizado ao abrir
+    analytics.logEvent(
+      name: 'welcome_screen_opened',
+    );
+  }
+
+  @override
+  void dispose() {
+    final duration = DateTime.now().difference(_startTime);
+
+    // Log do tempo de tela
+    analytics.logEvent(
+      name: 'tempo_tela',
+      parameters: {
+        'screen': 'WelcomeScreen',
+        'seconds': duration.inSeconds,
+      },
+    );
+    super.dispose();
+  }
+
+  void _handleButtonClick(nome, label) {
+    analytics.logEvent(
+      name: nome+"_button_clicked",
+      parameters: {
+        'label': label,
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    Future.microtask(() {
-      FirebaseAnalytics.instance.logScreenView(
-        screenName: 'WelcomeScreen',
-        screenClass: 'WelcomeScreen',
-      );
-    });
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
@@ -98,6 +142,7 @@ class WelcomeScreen extends StatelessWidget {
                   child: PrimaryButton(
                     text: 'Embarcar',
                     onPressed: () {
+                      _handleButtonClick('embarcar', 'botao_embarcar');
                       Navigator.pushNamed(context, '/login');
                     },
                   ),
@@ -113,6 +158,7 @@ class WelcomeScreen extends StatelessWidget {
             right: 0,
             child: GestureDetector(
               onTap: () {
+                _handleButtonClick('register', 'register_button');
                 Navigator.pushNamed(context, '/register');
               },
               child: Center(
@@ -151,3 +197,4 @@ class WelcomeScreen extends StatelessWidget {
     );
   }
 }
+
